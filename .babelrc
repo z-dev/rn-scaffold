@@ -1,9 +1,9 @@
 {
   "plugins": [
     "transform-class-properties",
-    "transform-object-rest-spread"
-  ],
-  "presets": [
-    "es2015",
+    "transform-object-rest-spread",
+    ["babel-root-slash-import", {
+      "rootPathSuffix": "src"
+    }]
   ]
 }
