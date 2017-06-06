@@ -9,11 +9,11 @@ const environment = process.env.NODE_ENV
 const getEnvironment = () => {
   switch (environment) {
     case 'production':
-      return(productionConfig)
+      return productionConfig
     case 'development':
-      return(developmentConfig)
+      return developmentConfig
     default:
-      return(developmentConfig)
+      return developmentConfig
   }
 }
 
