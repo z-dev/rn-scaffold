@@ -8,7 +8,7 @@
     "check:node": "check-node-version --node \">=7.4.0 <8\"",
     "ci": "yarn check && yarn lint:js && yarn test",
     "clean": "rm -rf dist",
-    "precommit": "sort-package-json && lint-staged && yarn lint",
+    "precommit": "lint-staged && yarn lint",
     "eslint-check": "eslint --print-config .eslintrc | eslint-config-prettier-check",
     "format:js": "prettier --single-quote --trailing-comma all --no-semi --print-width 180 --write \"{src,test}/**/*.js\"",
     "postinstall": "yarn check:node",
@@ -57,6 +57,10 @@
   "lint-staged": {
     "{src,test}/**/*.js": [
       "yarn format:js --",
+      "git add"
+    ],
+    "package.json": [
+      "sort-package-json",
       "git add"
     ]
   },
