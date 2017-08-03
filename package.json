@@ -6,23 +6,23 @@
   "scripts": {
     "build": "neutrino build --use neutrino-preset-node",
     "check:node": "check-node-version --node \">=8.1.2 <9\"",
-    "ci": "yarn lint:js && yarn test",
+    "ci": "npm run lint:js && npm run test",
     "clean": "rm -rf dist",
-    "precommit": "lint-staged && yarn lint",
+    "precommit": "lint-staged && npm run lint",
     "eslint-check": "eslint --print-config .eslintrc | eslint-config-prettier-check",
     "format:js": "prettier --single-quote --trailing-comma all --no-semi --print-width 180 --write \"{src,test}/**/*.js\"",
-    "postinstall": "yarn check:node",
-    "lint": "yarn lint:js",
+    "postinstall": "npm run check:node",
+    "lint": "npm run lint:js",
     "lint:js": "eslint ./src ./test --ext=js",
-    "lint:js:without:prettier": "yarn lint:js -- --rule 'prettier/prettier: 0'",
-    "lint:watch": "nodemon --watch src --exec \"yarn lint:without:prettier\"",
-    "lint:without:prettier": "yarn lint:js:without:prettier",
+    "lint:js:without:prettier": "npm run lint:js -- --rule 'prettier/prettier: 0'",
+    "lint:watch": "nodemon --watch src --exec \"npm run lint:without:prettier\"",
+    "lint:without:prettier": "npm run lint:js:without:prettier",
     "start": "neutrino start --use neutrino-preset-node",
     "start:built": "forever build/index.js",
-    "start:debug": "yarn start -- --debug",
+    "start:debug": "npm run start -- --debug",
     "start:docker": "docker build -t lead-finder-server . && docker run --rm -it lead-finder-server",
     "test": "neutrino test --use neutrino-preset-node neutrino-preset-mocha",
-    "test:watch": "nodemon -w src -w test --exec 'yarn test'"
+    "test:watch": "nodemon -w src -w test --exec 'npm run test'"
   },
   "dependencies": {
     "lodash": "^4.2.1"
