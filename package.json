@@ -25,13 +25,13 @@
     "test:watch": "nodemon -w src -w test --exec 'npm run test'"
   },
   "dependencies": {
+    "babel-plugin-root-import": "^5.1.0",
     "lodash": "^4.2.1"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
     "babel-plugin-transform-class-properties": "^6.23.0",
     "babel-plugin-transform-object-rest-spread": "^6.22.0",
-    "babel-root-slash-import": "^1.1.0",
     "chai": "^4.0.1",
     "chai-moment": "^0.1.0",
     "check-node-version": "^2.1.0",
