@@ -6,7 +6,7 @@
   "scripts": {
     "build": "neutrino build --use neutrino-preset-node",
     "check:node": "check-node-version --node \">=8.1.2 <9\"",
-    "ci": "yarn check && yarn lint:js && yarn test",
+    "ci": "yarn lint:js && yarn test",
     "clean": "rm -rf dist",
     "precommit": "lint-staged && yarn lint",
     "eslint-check": "eslint --print-config .eslintrc | eslint-config-prettier-check",
