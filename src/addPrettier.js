@@ -1,20 +1,29 @@
-console.log('Adding Prettier')
+import { exec } from 'child_process'
+import editJsonFile from 'edit-json-file'
+import addScript from './addScript'
 
-//This asks them a question and waits for their input (there might be a library to help with this!)
 
-exec('npm install --save-dev prettier eslint eslint-config-airbnb-base eslint-config-prettier  eslint-plugin-import eslint-plugin-prettier')
+export default () => {
+  let file = editJsonFile('package.json');
 
-addScript('prettier', '"prettier --single-quote --trailing-comma all --no-semi --print-width 180 --write"')
+  //This asks them a question and waits for their input (there might be a library to help with this!)
 
-addScript('format:js', '"npm run prettier -- \"{src}/**/*.js\""')
+  exec('npm install --save-dev prettier eslint eslint-config-airbnb-base eslint-config-prettier  eslint-plugin-import eslint-plugin-prettier')
 
-const lintStagedConfig = `
-  "lint-staged": {
-    "{components,pages,styles}/**/*.js": [
-      "npm run prettier -- ",
-      "git add"
-    ]
-  }
-`
+  console.log('Adding Prettier Scripts')
 
-addBeforeLast('package.json', '}', lintStagedConfig)
+  addScript('prettier', '"prettier --single-quote --trailing-comma all --no-semi --print-width 180 --write"')
+
+  addScript('format:js', '"npm run prettier -- \"{src}/**/*.js\""')
+
+  file.set("lint-staged", {
+      "{components,pages,styles}/**/*.js": [
+        "npm run prettier -- ",
+        "git add"
+      ]
+    })
+  file.save()
+
+  console.log('Finished Adding Prettier')
+}
+

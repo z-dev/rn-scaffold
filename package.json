@@ -17,13 +17,14 @@
     "start:docker": "docker build -t lead-finder-server . && docker run --rm -it lead-finder-server",
     "test": "neutrino test --use neutrino-preset-node neutrino-preset-mocha",
     "test:watch": "nodemon -w src -w test --exec 'npm run test'",
-    "prettier": "prettier --single-quote --trailing-comma all --no-semi --print-width 180 --write",
-    "format:js": "npm run prettier -- {src}/**/*.js"
+    "format:js": "npm run prettier -- {src}/**/*.js",
+    "prettier": "prettier --single-quote --trailing-comma all --no-semi --print-width 180 --write"
   },
   "dependencies": {
     "babel-plugin-root-import": "^5.1.0",
     "edit-json-file": "^1.0.4",
-    "lodash": "^4.2.1"
+    "lodash": "^4.2.1",
+    "yargs": "^8.0.2"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
@@ -57,5 +58,11 @@
         "recursive": true
       }
     }
+  },
+  "lint-staged": {
+    "{components,pages,styles}/**/*.js": [
+      "npm run prettier -- ",
+      "git add"
+    ]
   }
 }
