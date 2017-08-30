@@ -1,7 +1,8 @@
-import _ from 'lodash'
+import { exec } from 'child_process'
 
-while (true) {
-  if (_.random(0, 10, true) > 9.99999) {
-    console.log('Running1!')
-  }
-}
+
+console.log('Adding Prettier')
+
+//This asks them a question and waits for their input (there might be a library to help with this!)
+
+exec('npm install --save-dev prettier eslint eslint-config-airbnb-base eslint-config-prettier  eslint-plugin-import eslint-plugin-prettier')
