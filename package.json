@@ -16,10 +16,13 @@
     "start:debug": "npm run start -- --debug",
     "start:docker": "docker build -t lead-finder-server . && docker run --rm -it lead-finder-server",
     "test": "neutrino test --use neutrino-preset-node neutrino-preset-mocha",
-    "test:watch": "nodemon -w src -w test --exec 'npm run test'"
+    "test:watch": "nodemon -w src -w test --exec 'npm run test'",
+    "prettier": "prettier --single-quote --trailing-comma all --no-semi --print-width 180 --write",
+    "format:js": "npm run prettier -- {src}/**/*.js"
   },
   "dependencies": {
     "babel-plugin-root-import": "^5.1.0",
+    "edit-json-file": "^1.0.4",
     "lodash": "^4.2.1"
   },
   "devDependencies": {

@@ -4,9 +4,9 @@ console.log('Adding Prettier')
 
 exec('npm install --save-dev prettier eslint eslint-config-airbnb-base eslint-config-prettier  eslint-plugin-import eslint-plugin-prettier')
 
-addScript('prettier', 'prettier --single-quote --trailing-comma all --no-semi --print-width 180 --write')
+addScript('prettier', '"prettier --single-quote --trailing-comma all --no-semi --print-width 180 --write"')
 
-addScript('format:js', 'npm run prettier -- \"{src}/**/*.js\"')
+addScript('format:js', '"npm run prettier -- \"{src}/**/*.js\""')
 
 const lintStagedConfig = `
   "lint-staged": {
