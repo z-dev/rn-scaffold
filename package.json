@@ -8,7 +8,6 @@
     "check:node": "check-node-version --node \">=8.1.2 <9\"",
     "ci": "npm run lint:js && npm run test",
     "clean": "rm -rf dist",
-    "precommit": "lint-staged && npm run lint",
     "eslint-check": "eslint --print-config .eslintrc | eslint-config-prettier-check",
     "postinstall": "npm run check:node",
     "start": "neutrino start --use neutrino-preset-node",
@@ -17,12 +16,13 @@
     "start:docker": "docker build -t lead-finder-server . && docker run --rm -it lead-finder-server",
     "test": "neutrino test --use neutrino-preset-node neutrino-preset-mocha",
     "test:watch": "nodemon -w src -w test --exec 'npm run test'",
-    "format:js": "npm run prettier -- {src}/**/*.js",
-    "prettier": "prettier --single-quote --trailing-comma all --no-semi --print-width 180 --write"
+    "prettier": "prettier --single-quote --trailing-comma all --no-semi --print-width 180 --write",
+    "format:js": "npm run prettier -- \"{src}/**/*.js\"",
+    "precommit": "lint-staged && npm run format:js"
   },
   "dependencies": {
     "babel-plugin-root-import": "^5.1.0",
-    "edit-json-file": "^1.0.4",
+    "jsonfile": "^3.0.1",
     "lodash": "^4.2.1",
     "yargs": "^8.0.2"
   },

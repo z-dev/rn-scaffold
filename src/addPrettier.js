@@ -1,10 +1,9 @@
 import { exec } from 'child_process'
-import editJsonFile from 'edit-json-file'
 import addScript from './addScript'
+import test, { getFile } from './placeholder'
 
 
 export default () => {
-  let file = editJsonFile('package.json');
 
   //This asks them a question and waits for their input (there might be a library to help with this!)
 
@@ -12,17 +11,18 @@ export default () => {
 
   console.log('Adding Prettier Scripts')
 
-  addScript('prettier', '"prettier --single-quote --trailing-comma all --no-semi --print-width 180 --write"')
+  addScript('prettier', "prettier --single-quote --trailing-comma all --no-semi --print-width 180 --write")
 
-  addScript('format:js', '"npm run prettier -- \"{src}/**/*.js\""')
+  addScript('format:js', "npm run prettier -- \"{src}/**/*.js\"")
 
-  file.set("lint-staged", {
-      "{components,pages,styles}/**/*.js": [
-        "npm run prettier -- ",
-        "git add"
-      ]
-    })
-  file.save()
+  addScript('precommit', "lint-staged && npm run format:js")
+
+  test({'lint-staged': {
+    "{components,pages,styles}/**/*.js": [
+      "npm run prettier -- ",
+      "git add"
+    ]
+  }})
 
   console.log('Finished Adding Prettier')
 }
