@@ -1,7 +1,6 @@
 import { exec } from 'child_process'
 import addScript from './addScript'
-import test, { getFile } from './placeholder'
-
+import updateJson, { getFile } from './updateJson'
 
 export default () => {
 
@@ -17,12 +16,15 @@ export default () => {
 
   addScript('precommit', "lint-staged && npm run format:js")
 
-  test({'lint-staged': {
+  updateJson({'lint-staged': {
     "{components,pages,styles}/**/*.js": [
       "npm run prettier -- ",
       "git add"
     ]
   }})
+
+  exec('cat ./eslint.json | pbcopy')
+  exec('pbpaste > ./.eslintrc')
 
   console.log('Finished Adding Prettier')
 }
