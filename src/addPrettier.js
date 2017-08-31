@@ -1,6 +1,7 @@
 import { exec } from 'child_process'
 import addScript from './addScript'
 import updateJson, { getFile } from './updateJson'
+import fs from 'fs-extra'
 
 export default () => {
 
@@ -23,9 +24,7 @@ export default () => {
     ]
   }})
 
-  exec('cat ./eslint.json | pbcopy')
-  exec('pbpaste > ./.eslintrc')
-
+  fs.copySync('./src/eslint.json', './.eslintrc')
   console.log('Finished Adding Prettier')
 }
 
