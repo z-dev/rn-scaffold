@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rm -r ./build && neutrino build --use neutrino-preset-node && find src/ | grep -v -i .js$ | cpio -pdm ./build",
     "check:node": "check-node-version --node \">=8.1.2 <9\"",
-    "ci": "npm run lint:js && npm run test",
+    "ci": "npm run lint && npm run test",
     "clean": "rm -rf dist",
     "precommit": "lint-staged && npm run lint",
     "eslint-check": "eslint --print-config .eslintrc | eslint-config-prettier-check",
@@ -24,6 +24,7 @@
   "dependencies": {
     "babel-plugin-root-import": "^5.1.0",
     "fs-extra": "^4.0.1",
+    "json-stringify-pretty-compact": "^1.0.4",
     "jsonfile": "^3.0.1",
     "lodash": "^4.2.1",
     "yargs": "^8.0.2"

@@ -4,8 +4,8 @@ First run: `npm install`
 
 Then run:
 
-* Run `npm run start` to run the app
-* Run `npm run start:debug` to debug the app in chrome debugger
+* Run `npm run build` to run the app
+* then run `node build/index.js args-go-here`
 
 ### Debugging
 
