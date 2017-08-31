@@ -1,34 +1,36 @@
-import { exec } from 'child_process'
 import fs from 'fs-extra'
 import path from 'path'
-import addScript from './addScript'
-import updateJson from './updateJson'
+import addNpmScript from '~/common/addNpmScript'
+import updateJson from '~/common/updateJson'
+import executeCommand from '~/common/executeCommand'
 
 export default () => {
-  //  This asks them a question and waits for their input (there might be a library to help with this!)
+  executeCommand('npm install --save-dev prettier babel-eslint eslint-config-prettier eslint-plugin-prettier husky lint-staged sort-package-json')
 
-  exec('npm install --save-dev prettier eslint eslint-config-airbnb-base eslint-config-prettier  eslint-plugin-import eslint-plugin-prettier husky lint-staged sort-package-json')
-  exec(`(
+  executeCommand(`(
     export PKG=eslint-config-airbnb;
     npm info "$PKG@latest" peerDependencies --json | command sed 's/[{},]//g ; s/: /@/g' | xargs npm install --save-dev "$PKG@latest"
   )`)
-  console.log('Adding Prettier Scripts')
 
-  addScript('prettier', 'prettier --single-quote --trailing-comma all --no-semi --print-width 180 --write')
+  addNpmScript('prettier', 'prettier --single-quote --trailing-comma all --no-semi --print-width 180 --write')
 
-  addScript('format:js', 'npm run prettier -- "src/**/*.js"')
+  addNpmScript('format:js', 'npm run prettier -- "src/**/*.js"')
 
-  addScript('precommit', 'lint-staged && npm run lint')
+  addNpmScript('precommit', 'lint-staged && npm run lint')
 
-  addScript('lint', 'eslint ./src ./test --ext=js')
+  addNpmScript('lint', 'eslint ./src --ext=js')
 
-  updateJson({
-    'lint-staged': {
-      'src/**/*.js': ['npm run format:js --', 'git add'],
-      'package.json': ['sort-package-json', 'git add'],
+  updateJson(
+    {
+      'lint-staged': {
+        'src/**/*.js': ['npm run prettier --', 'git add'],
+        'package.json': ['sort-package-json', 'git add'],
+      },
     },
-  })
+    './package.json',
+  )
 
-  fs.copySync(path.join(__dirname, 'src/eslint.yml'), './.eslintrc')
+  fs.copySync(path.join(__dirname, 'src/prettierLint/.eslintrc'), './.eslintrc')
+
   console.log('Finished Adding Prettier')
 }
