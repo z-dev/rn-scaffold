@@ -1,13 +1,17 @@
 import { exec } from 'child_process'
-import addScript from './addScript'
-import updateJson, { getFile } from './updateJson'
 import fs from 'fs-extra'
 import path from 'path'
+import addScript from './addScript'
+import updateJson from './updateJson'
+
 export default () => {
-  //This asks them a question and waits for their input (there might be a library to help with this!)
+  //  This asks them a question and waits for their input (there might be a library to help with this!)
 
   exec('npm install --save-dev prettier eslint eslint-config-airbnb-base eslint-config-prettier  eslint-plugin-import eslint-plugin-prettier husky lint-staged sort-package-json')
-
+  exec(`(
+    export PKG=eslint-config-airbnb;
+    npm info "$PKG@latest" peerDependencies --json | command sed 's/[{},]//g ; s/: /@/g' | xargs npm install --save-dev "$PKG@latest"
+  )`)
   console.log('Adding Prettier Scripts')
 
   addScript('prettier', 'prettier --single-quote --trailing-comma all --no-semi --print-width 180 --write')
@@ -25,6 +29,6 @@ export default () => {
     },
   })
 
-  fs.copySync(path.join(__dirname, 'src/eslint.json'), './.eslintrc')
+  fs.copySync(path.join(__dirname, 'src/eslint.yml'), './.eslintrc')
   console.log('Finished Adding Prettier')
 }
