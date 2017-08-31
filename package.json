@@ -1,32 +1,32 @@
 {
-  "name": "node-seed",
+  "name": "scaffolding",
   "version": "1.0.0",
   "description": "",
   "license": "ISC",
   "scripts": {
-    "build": "neutrino build --use neutrino-preset-node",
+    "build": "rm -r ./build && neutrino build --use neutrino-preset-node && find src/ | grep -v -i .js$ | cpio -pdm ./build",
     "check:node": "check-node-version --node \">=8.1.2 <9\"",
     "ci": "npm run lint:js && npm run test",
     "clean": "rm -rf dist",
     "precommit": "lint-staged && npm run lint",
     "eslint-check": "eslint --print-config .eslintrc | eslint-config-prettier-check",
-    "format:js": "prettier --single-quote --trailing-comma all --no-semi --print-width 180 --write \"{src,test}/**/*.js\"",
+    "format:js": "npm run prettier -- \"src/**/*.js\"",
     "postinstall": "npm run check:node",
-    "lint": "npm run lint:js",
-    "lint:js": "eslint ./src ./test --ext=js",
-    "lint:js:without:prettier": "npm run lint:js -- --rule 'prettier/prettier: 0'",
-    "lint:watch": "nodemon --watch src --exec \"npm run lint:without:prettier\"",
-    "lint:without:prettier": "npm run lint:js:without:prettier",
+    "lint": "eslint ./src ./test --ext=js",
     "start": "neutrino start --use neutrino-preset-node",
     "start:built": "forever build/index.js",
     "start:debug": "npm run start -- --debug",
     "start:docker": "docker build -t lead-finder-server . && docker run --rm -it lead-finder-server",
     "test": "neutrino test --use neutrino-preset-node neutrino-preset-mocha",
-    "test:watch": "nodemon -w src -w test --exec 'npm run test'"
+    "test:watch": "nodemon -w src -w test --exec 'npm run test'",
+    "prettier": "prettier --single-quote --trailing-comma all --no-semi --print-width 180 --write"
   },
   "dependencies": {
     "babel-plugin-root-import": "^5.1.0",
-    "lodash": "^4.2.1"
+    "fs-extra": "^4.0.1",
+    "jsonfile": "^3.0.1",
+    "lodash": "^4.2.1",
+    "yargs": "^8.0.2"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
@@ -35,28 +35,31 @@
     "chai": "^4.0.1",
     "chai-moment": "^0.1.0",
     "check-node-version": "^2.1.0",
-    "eslint": "^3.14.1",
-    "eslint-config-airbnb-base": "^11.2.0",
-    "eslint-config-prettier": "^2.1.0",
-    "eslint-plugin-import": "2.2.0",
-    "eslint-plugin-prettier": "^2.0.1",
+    "eslint": "^4.5.0",
+    "eslint-config-airbnb": "^15.1.0",
+    "eslint-config-airbnb-base": "^11.3.2",
+    "eslint-config-prettier": "^2.3.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-prettier": "^2.2.0",
+    "eslint-plugin-react": "^7.3.0",
     "forever": "^0.15.3",
-    "husky": "^0.13.3",
-    "lint-staged": "^3.4.0",
+    "husky": "^0.13.4",
+    "lint-staged": "^3.6.1",
     "neutrino": "^5.9.0",
     "neutrino-preset-mocha": "^5.9.0",
     "neutrino-preset-node": "^5.9.1",
     "nodemon": "^1.8.1",
-    "prettier": "^1.2.2",
-    "sort-package-json": "^1.6.1"
+    "prettier": "^1.6.1",
+    "sort-package-json": "^1.7.1"
   },
   "engines": {
     "node": ">= 7.9.0"
   },
   "engine-strict": true,
   "lint-staged": {
-    "{src,test}/**/*.js": [
-      "yarn format:js --",
+    "src/**/*.js": [
+      "npm run format:js --",
       "git add"
     ],
     "package.json": [
