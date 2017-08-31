@@ -8,9 +8,9 @@
     "check:node": "check-node-version --node \">=8.1.2 <9\"",
     "ci": "npm run lint:js && npm run test",
     "clean": "rm -rf dist",
-    "precommit": "lint-staged && npm run format:js",
+    "precommit": "lint-staged && npm run lint",
     "eslint-check": "eslint --print-config .eslintrc | eslint-config-prettier-check",
-    "format:js": "npm run prettier -- \"{src}/**/*.js\"",
+    "format:js": "npm run prettier -- \"src/**/*.js\"",
     "postinstall": "npm run check:node",
     "lint": "eslint ./src ./test --ext=js",
     "start": "neutrino start --use neutrino-preset-node",
@@ -55,8 +55,8 @@
   },
   "engine-strict": true,
   "lint-staged": {
-    "{src,test}/**/*.js": [
-      "npm run format:js --",
+    "src/**/*.js": [
+      "npm run prettier --",
       "git add"
     ],
     "package.json": [

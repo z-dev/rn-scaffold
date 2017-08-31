@@ -12,15 +12,15 @@ export default () => {
 
   addScript('prettier', 'prettier --single-quote --trailing-comma all --no-semi --print-width 180 --write')
 
-  addScript('format:js', 'npm run prettier -- "{src}/**/*.js"')
+  addScript('format:js', 'npm run prettier -- "src/**/*.js"')
 
-  addScript('precommit', 'lint-staged && npm run format:js')
+  addScript('precommit', 'lint-staged && npm run lint')
 
   addScript('lint', 'eslint ./src ./test --ext=js')
 
   updateJson({
     'lint-staged': {
-      '{src,test}/**/*.js': ['npm run format:js --', 'git add'],
+      'src/**/*.js': ['npm run format:js --', 'git add'],
       'package.json': ['sort-package-json', 'git add'],
     },
   })
