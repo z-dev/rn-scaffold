@@ -5,7 +5,7 @@ import updateJson from '~/common/updateJson'
 export default () => {
   executeCommand('npm install --save-dev react-native-schemes-manager')
 
-  addNpmScript('postinstall', 'react-native-schemes-manager all && (cd ios && pod install --verbose) && yarn clean:babelrc')
+  addNpmScript('postinstall', 'react-native-schemes-manager all && (cd ios && pod install --verbose)')
 
   updateJson(
     {
