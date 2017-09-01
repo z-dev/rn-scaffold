@@ -1,16 +1,8 @@
 import xcode from 'xcode'
 import _ from 'lodash'
 import fs from 'fs'
+import { arrayWrap } from '~/common/utils'
 
-export const arrayWrap = x => {
-  if (_.isArray(x)) {
-    return x
-  }
-  if (_.isNil(x)) {
-    return []
-  }
-  return [x]
-}
 const xcodeProjectFromFile = projectPath => xcode.project(projectPath).parseSync()
 
 const saveXcodeProject = (projectPath, xcodeProject) => fs.writeFileSync(projectPath, xcodeProject.writeSync())
