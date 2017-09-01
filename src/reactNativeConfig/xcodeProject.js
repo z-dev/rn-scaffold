@@ -87,7 +87,6 @@ export const addPreProcessorEnvironments = projectPath => {
 export const iconsPerEnvironment = projectName => {
   const projectPath = projectFileFromProjectName(projectName)
   console.log(`\nAdding App Icon per environment\n`)
-  console.log(path.join(__dirname, 'src/reactNativeConfig/appIcons'))
   fs.copySync(path.join(__dirname, 'src/reactNativeConfig/appIcons'), `ios/${projectName}/Images.xcassets/`)
   const xcodeProject = xcodeProjectFromFile(projectPath)
   const buildConfigurations = getBuildConfigurations(projectPath)
