@@ -1,4 +1,4 @@
-import { replaceInFile } from '~/common/replace'
+import { replaceInFile, addInFileAfter } from '~/common/replace'
 import executeCommand from '~/common/executeCommand'
 import addNpmScript from '~/common/addNpmScript'
 import updateJson from '~/common/updateJson'
@@ -8,9 +8,9 @@ import { addPreProcessorEnvironments, copyBuildConfiguration } from './xcodeProj
 export default () => {
   console.log('Adding React Native Config')
 
-  copyBuildConfiguration('ios/Test1.xcodeproj/project.pbxproj', 'Release', 'Staging')
+  copyBuildConfiguration('ios/test.xcodeproj/project.pbxproj', 'Release', 'Staging')
 
-  addPreProcessorEnvironments('ios/Test1.xcodeproj/project.pbxproj')
+  addPreProcessorEnvironments('ios/test.xcodeproj/project.pbxproj')
 
   executeCommand('npm install --save-dev react-native-schemes-manager')
 
@@ -30,8 +30,17 @@ export default () => {
   executeCommand('rm package-lock.json && npm install')
 
   replaceInFile({
-    files: './ios/Test1/AppDelegate.m',
+    files: './ios/test/AppDelegate.m',
     from: 'initialProperties:nil',
     to: 'initialProperties:@{@"environment" : ENVIRONMENT}',
   })
+
+  addInFileAfter(
+    './android/app/build.gradle',
+    'import com.android.build.OutputFile',
+    `project.ext.react = [
+    bundleInStaging: true,
+    bundleInRelease: true
+  ]`,
+  )
 }
