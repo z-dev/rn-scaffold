@@ -93,7 +93,6 @@ export const iconsPerEnvironment = projectName => {
   const buildConfigurations = getBuildConfigurations(projectPath)
   _.forEach(buildConfigurations, buildConfiguration => {
     const appBuildConfig = findAppBuildConfig(xcodeProject, buildConfiguration)
-    console.log(appBuildConfig)
     appBuildConfig.buildSettings.ASSETCATALOG_COMPILER_APPICON_NAME = `AppIcon.${buildConfiguration}`
   })
   saveXcodeProject(projectPath, xcodeProject)
