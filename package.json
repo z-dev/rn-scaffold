@@ -27,6 +27,7 @@
     "json-stringify-pretty-compact": "^1.0.4",
     "jsonfile": "^3.0.1",
     "lodash": "^4.2.1",
+    "replace-in-file": "^2.6.3",
     "xcode": "^0.9.3",
     "yargs": "^8.0.2"
   },

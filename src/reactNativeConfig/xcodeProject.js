@@ -2,6 +2,15 @@ import xcode from 'xcode'
 import _ from 'lodash'
 import fs from 'fs'
 
+export const arrayWrap = x => {
+  if (_.isArray(x)) {
+    return x
+  }
+  if (_.isNil(x)) {
+    return []
+  }
+  return [x]
+}
 const xcodeProjectFromFile = projectPath => xcode.project(projectPath).parseSync()
 
 const saveXcodeProject = (projectPath, xcodeProject) => fs.writeFileSync(projectPath, xcodeProject.writeSync())
@@ -22,7 +31,10 @@ export const addUserDefinedEnvironment = projectPath => {
   const buildConfigurations = getBuildConfigurations(projectPath)
   _.forEach(buildConfigurations, buildConfiguration => {
     const projectBuildConfig = _.find(xcodeProject.pbxXCBuildConfigurationSection(), x => !_.has(x, 'buildSettings.PRODUCT_NAME') && x.name === buildConfiguration)
-    projectBuildConfig.buildSettings.ENVIRONMENT = _.toUpper(buildConfiguration)
+    console.log(projectBuildConfig.buildSettings)
+    const environmentDefiniton = `"ENVIRONMENT=\\\\@\\\\\\"${_.toUpper(buildConfiguration)}\\\\\\""`
+    const gccPreprocessorDefinitions = [environmentDefiniton, ...arrayWrap(projectBuildConfig.buildSettings.GCC_PREPROCESSOR_DEFINITIONS)]
+    projectBuildConfig.buildSettings.GCC_PREPROCESSOR_DEFINITIONS = gccPreprocessorDefinitions
   })
   saveXcodeProject(projectPath, xcodeProject)
 }
