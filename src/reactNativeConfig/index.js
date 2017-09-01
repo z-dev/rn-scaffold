@@ -1,4 +1,4 @@
-import { replaceInFile } from '~/common/replace'
+import { replaceInFile, addInFileAfter } from '~/common/replace'
 import executeCommand from '~/common/executeCommand'
 import addNpmScript from '~/common/addNpmScript'
 import updateJson from '~/common/updateJson'
@@ -10,6 +10,8 @@ export default () => {
   console.log('Adding React Native Config')
 
   const xcodeProjectName = findReactNativeProjectName()
+
+  addPreProcessorEnvironments('ios/test.xcodeproj/project.pbxproj')
 
   const projectFile = projectFileFromProjectName(xcodeProjectName)
 
@@ -45,4 +47,41 @@ export default () => {
     from: 'initialProperties:nil',
     to: 'initialProperties:@{@"environment" : ENVIRONMENT}',
   })
+
+  addInFileAfter(
+    './android/app/build.gradle',
+    'import com.android.build.OutputFile',
+    `\n\nproject.ext.react = [
+    bundleInStaging: true,
+    bundleInRelease: true
+  ]`,
+  )
+
+  addInFileAfter(
+    './android/app/build.gradle',
+    `proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        }`,
+    `\n        staging {
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        }`,
+  )
+
+  addInFileAfter(
+    `./android/app/src/main/java/com/${xcodeProjectName}/MainActivity.java`,
+    `return "${xcodeProjectName}";
+    }`,
+    `\n    @Override
+    protected ReactActivityDelegate createReactActivityDelegate() {
+        return new ReactActivityDelegate(this, getMainComponentName()) {
+            @Nullable
+            @Override
+            protected Bundle getLaunchOptions() {
+                Bundle initialProps = new Bundle();
+                initialProps.putString("environment", BuildConfig.BUILD_TYPE);
+                return initialProps;
+            }
+        };
+    }`,
+  )
 }
