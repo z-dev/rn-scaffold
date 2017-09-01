@@ -67,8 +67,7 @@ export default async () => {
     `\n        staging {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-        }
-      }`,
+        }`,
   )
 
   addInFileAfter(
