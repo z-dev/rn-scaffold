@@ -16,8 +16,6 @@ export default async () => {
 
   const xcodeProjectName = findReactNativeProjectName()
 
-  addPreProcessorEnvironments('ios/test.xcodeproj/project.pbxproj')
-
   const projectFile = projectFileFromProjectName(xcodeProjectName)
 
   copyBuildConfiguration(projectFile, 'Release', 'Staging')
