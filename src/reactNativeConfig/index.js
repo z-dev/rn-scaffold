@@ -67,8 +67,7 @@ export default async () => {
     `\n        staging {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-        }
-      }`,
+        }`,
   )
 
   addInFileAfter(
@@ -87,5 +86,13 @@ export default async () => {
             }
         };
     }`,
+  )
+
+  addInFileAfter(
+    `./android/app/src/main/java/com/${xcodeProjectName}/MainActivity.java`,
+    `import com.facebook.react.ReactActivity;`,
+    `\nimport com.facebook.react.ReactActivityDelegate;
+    import android.os.Bundle;
+    import android.support.annotation.Nullable;`,
   )
 }
