@@ -87,6 +87,7 @@ export const iconsPerEnvironment = projectName => {
   const projectPath = projectFileFromProjectName(projectName)
   console.log(`\nAdding App Icon per environment\n`)
   fs.copySync(path.join(__dirname, 'src/reactNativeConfig/appIcons'), `ios/${projectName}/Images.xcassets/`)
+  fs.remove(`ios/${projectName}/Images.xcassets/AppIcon.appiconset`)
   const xcodeProject = xcodeProjectFromFile(projectPath)
   const buildConfigurations = getBuildConfigurations(projectPath)
   _.forEach(buildConfigurations, buildConfiguration => {
