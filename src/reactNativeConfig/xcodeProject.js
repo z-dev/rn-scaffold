@@ -33,7 +33,6 @@ const findProjectBuildConfig = (xcodeProject, buildConfiguration) =>
 const findAppBuildConfig = (xcodeProject, buildConfiguration) =>
   _.find(findBuildConfigs(xcodeProject, buildConfiguration), config => {
     const infoPlistFile = _.get(config, 'buildSettings.INFOPLIST_FILE')
-    console.log(infoPlistFile)
     return !_.includes(infoPlistFile, 'tvOS') && !_.includes(infoPlistFile, 'Tests/') && !_.has(config, 'buildSettings.GCC_PREPROCESSOR_DEFINITIONS')
   })
 
