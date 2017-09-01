@@ -7,12 +7,11 @@ export const replaceInFile = options => {
 
 export const addInFileAfter = (file, toReplace, newString) => {
   console.log(`\n adding ${newString} after ${toReplace} in: ${file}`)
-  const string = `${toReplace} ${newString}`
 
   const options = {
     files: file,
     from: toReplace,
-    to: string,
+    to: `${toReplace} ${newString}`,
   }
   replace.sync(options)
 }
