@@ -16,14 +16,13 @@ const getBuildConfigurations = projectPath => {
     .value()
 }
 
-export const addUserDefinedEnvironment = projectPath => {
-  console.log(`\nAdding user defined ENVIRONMENT variables in ${projectPath}\n`)
+export const addPreProcessorEnvironments = projectPath => {
+  console.log(`\nAdding Preprocessor ENVIRONMENT variables in ${projectPath}\n`)
 
   const xcodeProject = xcodeProjectFromFile(projectPath)
   const buildConfigurations = getBuildConfigurations(projectPath)
   _.forEach(buildConfigurations, buildConfiguration => {
     const projectBuildConfig = _.find(xcodeProject.pbxXCBuildConfigurationSection(), x => !_.has(x, 'buildSettings.PRODUCT_NAME') && x.name === buildConfiguration)
-    console.log(projectBuildConfig.buildSettings)
     const environmentDefiniton = `"ENVIRONMENT=\\\\@\\\\\\"${_.toUpper(buildConfiguration)}\\\\\\""`
     const gccPreprocessorDefinitions = [environmentDefiniton, ...arrayWrap(projectBuildConfig.buildSettings.GCC_PREPROCESSOR_DEFINITIONS)]
     projectBuildConfig.buildSettings.GCC_PREPROCESSOR_DEFINITIONS = gccPreprocessorDefinitions
