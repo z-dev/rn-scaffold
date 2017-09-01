@@ -6,7 +6,7 @@ export const replaceInFile = options => {
 }
 
 export const addInFileAfter = (file, toReplace, newString) => {
-  console.log(`\n adding ${newString} after ${toReplace}`)
+  console.log(`\n adding ${newString} after ${toReplace} in: ${file}`)
   const string = `${toReplace} ${newString}`
 
   const options = {
