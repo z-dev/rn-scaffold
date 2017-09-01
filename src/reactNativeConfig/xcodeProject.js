@@ -2,10 +2,17 @@ import xcode from 'xcode'
 import _ from 'lodash'
 import fs from 'fs'
 import { arrayWrap } from '~/common/utils'
+import plist from 'plist'
+import { projectFileFromProjectName } from './reactNative'
 
 const xcodeProjectFromFile = projectPath => xcode.project(projectPath).parseSync()
 
 const saveXcodeProject = (projectPath, xcodeProject) => fs.writeFileSync(projectPath, xcodeProject.writeSync())
+
+const updateInfoPlist = (infoPlistFile, key, value) => {
+  const data = plist.parse(fs.readFileSync(infoPlistFile, 'utf8'))
+  fs.writeFileSync(infoPlistFile, plist.build({ ...data, [key]: value }))
+}
 
 const getBuildConfigurations = projectPath => {
   const xcodeProject = xcodeProjectFromFile(projectPath)
@@ -19,7 +26,25 @@ const getBuildConfigurations = projectPath => {
 const findProjectBuildConfig = (xcodeProject, buildConfiguration) =>
   _.find(xcodeProject.pbxXCBuildConfigurationSection(), config => !_.has(config, 'buildSettings.PRODUCT_NAME') && config.name === buildConfiguration)
 
-export const bundleIdPerEnvironment = (projectPath, bundleIdPrefix) => {
+export const appNamePerEnvironment = (projectName, appNamePrefix) => {
+  const projectPath = projectFileFromProjectName(projectName)
+  console.log(`\nAdding App Name per environment ${projectPath}\n`)
+
+  const xcodeProject = xcodeProjectFromFile(projectPath)
+  const buildConfigurations = getBuildConfigurations(projectPath)
+  _.forEach(buildConfigurations, buildConfiguration => {
+    const projectBuildConfig = findProjectBuildConfig(xcodeProject, buildConfiguration)
+    const appNameSuffix = buildConfiguration === 'Release' ? '' : ` ${buildConfiguration}`
+    const appName = `${appNamePrefix}${appNameSuffix}`
+    console.log(`\nSetting up a App Name for ${buildConfiguration}: ${appName}\n`)
+    projectBuildConfig.buildSettings.APP_NAME = `"${appName}"`
+  })
+  saveXcodeProject(projectPath, xcodeProject)
+  updateInfoPlist(`ios/${projectName}/Info.plist`, 'CFBundleDisplayName', '$(APP_NAME)')
+}
+
+export const bundleIdPerEnvironment = (projectName, bundleIdPrefix) => {
+  const projectPath = projectFileFromProjectName(projectName)
   console.log(`\nSetting up a bundle id per environment ${projectPath}\n`)
 
   const xcodeProject = xcodeProjectFromFile(projectPath)
@@ -28,9 +53,10 @@ export const bundleIdPerEnvironment = (projectPath, bundleIdPrefix) => {
     const projectBuildConfig = findProjectBuildConfig(xcodeProject, buildConfiguration)
     const bundleId = `${bundleIdPrefix}.${_.toLower(buildConfiguration)}`
     console.log(`\nSetting up a bundle id for ${buildConfiguration}: ${bundleId}\n`)
-    projectBuildConfig.buildSettings.PRODUCT_BUNDLE_IDENTIFIER = `${bundleIdPrefix}.${buildConfiguration}`
+    projectBuildConfig.buildSettings.PRODUCT_BUNDLE_IDENTIFIER = bundleId
   })
   saveXcodeProject(projectPath, xcodeProject)
+  updateInfoPlist(`ios/${projectName}/Info.plist`, 'CFBundleIdentifier', '$(PRODUCT_BUNDLE_IDENTIFIER)')
 }
 
 export const addPreProcessorEnvironments = projectPath => {

@@ -2,22 +2,24 @@ import { replaceInFile } from '~/common/replace'
 import executeCommand from '~/common/executeCommand'
 import addNpmScript from '~/common/addNpmScript'
 import updateJson from '~/common/updateJson'
-import { findReactNativeXcodeProjectName } from './reactNative'
+import { findReactNativeXcodeProjectName, projectFileFromProjectName } from './reactNative'
 
-import { addPreProcessorEnvironments, bundleIdPerEnvironment, copyBuildConfiguration } from './xcodeProject'
+import { appNamePerEnvironment, addPreProcessorEnvironments, bundleIdPerEnvironment, copyBuildConfiguration } from './xcodeProject'
 
 export default () => {
   console.log('Adding React Native Config')
 
   const xcodeProjectName = findReactNativeXcodeProjectName()
 
-  const projectFile = `ios/${xcodeProjectName}.xcodeproj/project.pbxproj`
+  const projectFile = projectFileFromProjectName(xcodeProjectName)
 
   copyBuildConfiguration(projectFile, 'Release', 'Staging')
 
   addPreProcessorEnvironments(projectFile)
 
-  bundleIdPerEnvironment(projectFile, 'com.zdev.project')
+  bundleIdPerEnvironment(xcodeProjectName, 'com.zdev.project')
+
+  appNamePerEnvironment(xcodeProjectName, 'My App')
 
   executeCommand('npm install --save-dev react-native-schemes-manager')
 
