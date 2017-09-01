@@ -2,14 +2,14 @@ import { replaceInFile } from '~/common/replace'
 import executeCommand from '~/common/executeCommand'
 import addNpmScript from '~/common/addNpmScript'
 import updateJson from '~/common/updateJson'
-import { findReactNativeXcodeProjectName, projectFileFromProjectName } from './reactNative'
+import { findReactNativeProjectName, projectFileFromProjectName } from './reactNative'
 
-import { appNamePerEnvironment, addPreProcessorEnvironments, bundleIdPerEnvironment, copyBuildConfiguration } from './xcodeProject'
+import { appNamePerEnvironment, iconsPerEnvironment, addPreProcessorEnvironments, bundleIdPerEnvironment, copyBuildConfiguration } from './xcodeProject'
 
 export default () => {
   console.log('Adding React Native Config')
 
-  const xcodeProjectName = findReactNativeXcodeProjectName()
+  const xcodeProjectName = findReactNativeProjectName()
 
   const projectFile = projectFileFromProjectName(xcodeProjectName)
 
@@ -20,6 +20,8 @@ export default () => {
   bundleIdPerEnvironment(xcodeProjectName, 'com.zdev.project')
 
   appNamePerEnvironment(xcodeProjectName, 'My App')
+
+  iconsPerEnvironment(xcodeProjectName)
 
   executeCommand('npm install --save-dev react-native-schemes-manager')
 
