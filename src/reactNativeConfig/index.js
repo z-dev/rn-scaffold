@@ -2,12 +2,17 @@ import { replaceInFile, addInFileAfter } from '~/common/replace'
 import executeCommand from '~/common/executeCommand'
 import addNpmScript from '~/common/addNpmScript'
 import updateJson from '~/common/updateJson'
+import prompt from 'prompt-promise'
+
 import { findReactNativeProjectName, projectFileFromProjectName } from './reactNative'
 
 import { appNamePerEnvironment, iconsPerEnvironment, addPreProcessorEnvironments, bundleIdPerEnvironment, copyBuildConfiguration } from './xcodeProject'
 
-export default () => {
+export default async () => {
   console.log('Adding React Native Config')
+
+  const bundleId = await prompt('bundleId (e.g. com.zdev.something): ')
+  const appName = await prompt('App Name (e.g. Expresso): ')
 
   const xcodeProjectName = findReactNativeProjectName()
 
@@ -19,9 +24,9 @@ export default () => {
 
   addPreProcessorEnvironments(projectFile)
 
-  bundleIdPerEnvironment(xcodeProjectName, 'com.zdev.project')
+  bundleIdPerEnvironment(xcodeProjectName, bundleId)
 
-  appNamePerEnvironment(xcodeProjectName, 'My App')
+  appNamePerEnvironment(xcodeProjectName, appName)
 
   iconsPerEnvironment(xcodeProjectName)
 
