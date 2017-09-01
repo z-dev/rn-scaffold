@@ -16,13 +16,30 @@ const getBuildConfigurations = projectPath => {
     .value()
 }
 
+const findProjectBuildConfig = (xcodeProject, buildConfiguration) =>
+  _.find(xcodeProject.pbxXCBuildConfigurationSection(), config => !_.has(config, 'buildSettings.PRODUCT_NAME') && config.name === buildConfiguration)
+
+export const bundleIdPerEnvironment = (projectPath, bundleIdPrefix) => {
+  console.log(`\nSetting up a bundle id per environment ${projectPath}\n`)
+
+  const xcodeProject = xcodeProjectFromFile(projectPath)
+  const buildConfigurations = getBuildConfigurations(projectPath)
+  _.forEach(buildConfigurations, buildConfiguration => {
+    const projectBuildConfig = findProjectBuildConfig(xcodeProject, buildConfiguration)
+    const bundleId = `${bundleIdPrefix}.${_.toLower(buildConfiguration)}`
+    console.log(`\nSetting up a bundle id for ${buildConfiguration}: ${bundleId}\n`)
+    projectBuildConfig.buildSettings.PRODUCT_BUNDLE_IDENTIFIER = `${bundleIdPrefix}.${buildConfiguration}`
+  })
+  saveXcodeProject(projectPath, xcodeProject)
+}
+
 export const addPreProcessorEnvironments = projectPath => {
   console.log(`\nAdding Preprocessor ENVIRONMENT variables in ${projectPath}\n`)
 
   const xcodeProject = xcodeProjectFromFile(projectPath)
   const buildConfigurations = getBuildConfigurations(projectPath)
   _.forEach(buildConfigurations, buildConfiguration => {
-    const projectBuildConfig = _.find(xcodeProject.pbxXCBuildConfigurationSection(), x => !_.has(x, 'buildSettings.PRODUCT_NAME') && x.name === buildConfiguration)
+    const projectBuildConfig = findProjectBuildConfig(xcodeProject, buildConfiguration)
     const environmentDefiniton = `"ENVIRONMENT=\\\\@\\\\\\"${_.toUpper(buildConfiguration)}\\\\\\""`
     const gccPreprocessorDefinitions = [environmentDefiniton, ...arrayWrap(projectBuildConfig.buildSettings.GCC_PREPROCESSOR_DEFINITIONS)]
     projectBuildConfig.buildSettings.GCC_PREPROCESSOR_DEFINITIONS = gccPreprocessorDefinitions
