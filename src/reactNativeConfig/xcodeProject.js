@@ -1,8 +1,10 @@
 import xcode from 'xcode'
 import _ from 'lodash'
-import fs from 'fs'
+import fs from 'fs-extra'
 import { arrayWrap } from '~/common/utils'
 import plist from 'plist'
+import path from 'path'
+
 import { projectFileFromProjectName } from './reactNative'
 
 const xcodeProjectFromFile = projectPath => xcode.project(projectPath).parseSync()
@@ -23,8 +25,17 @@ const getBuildConfigurations = projectPath => {
     .value()
 }
 
+const findBuildConfigs = (xcodeProject, buildConfiguration) => _.filter(xcodeProject.pbxXCBuildConfigurationSection(), config => config.name === buildConfiguration)
+
 const findProjectBuildConfig = (xcodeProject, buildConfiguration) =>
-  _.find(xcodeProject.pbxXCBuildConfigurationSection(), config => !_.has(config, 'buildSettings.PRODUCT_NAME') && config.name === buildConfiguration)
+  _.find(findBuildConfigs(xcodeProject, buildConfiguration), config => !_.has(config, 'buildSettings.PRODUCT_NAME'))
+
+const findAppBuildConfig = (xcodeProject, buildConfiguration) =>
+  _.find(findBuildConfigs(xcodeProject, buildConfiguration), config => {
+    const infoPlistFile = _.get(config, 'buildSettings.INFOPLIST_FILE')
+    console.log(infoPlistFile)
+    return !_.includes(infoPlistFile, 'tvOS') && !_.includes(infoPlistFile, 'Tests/') && !_.has(config, 'buildSettings.GCC_PREPROCESSOR_DEFINITIONS')
+  })
 
 export const appNamePerEnvironment = (projectName, appNamePrefix) => {
   const projectPath = projectFileFromProjectName(projectName)
@@ -69,6 +80,21 @@ export const addPreProcessorEnvironments = projectPath => {
     const environmentDefiniton = `"ENVIRONMENT=\\\\@\\\\\\"${_.toUpper(buildConfiguration)}\\\\\\""`
     const gccPreprocessorDefinitions = [environmentDefiniton, ...arrayWrap(projectBuildConfig.buildSettings.GCC_PREPROCESSOR_DEFINITIONS)]
     projectBuildConfig.buildSettings.GCC_PREPROCESSOR_DEFINITIONS = gccPreprocessorDefinitions
+  })
+  saveXcodeProject(projectPath, xcodeProject)
+}
+
+export const iconsPerEnvironment = projectName => {
+  const projectPath = projectFileFromProjectName(projectName)
+  console.log(`\nAdding App Icon per environment\n`)
+  console.log(path.join(__dirname, 'src/reactNativeConfig/appIcons'))
+  fs.copySync(path.join(__dirname, 'src/reactNativeConfig/appIcons'), `ios/${projectName}/Images.xcassets/`)
+  const xcodeProject = xcodeProjectFromFile(projectPath)
+  const buildConfigurations = getBuildConfigurations(projectPath)
+  _.forEach(buildConfigurations, buildConfiguration => {
+    const appBuildConfig = findAppBuildConfig(xcodeProject, buildConfiguration)
+    console.log(appBuildConfig)
+    appBuildConfig.buildSettings.ASSETCATALOG_COMPILER_APPICON_NAME = `AppIcon.${buildConfiguration}`
   })
   saveXcodeProject(projectPath, xcodeProject)
 }
