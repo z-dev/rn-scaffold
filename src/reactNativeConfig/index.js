@@ -4,25 +4,26 @@ import addNpmScript from '~/common/addNpmScript'
 import updateJson from '~/common/updateJson'
 import { findReactNativeProjectName, projectFileFromProjectName } from './reactNative'
 
-import { appNamePerEnvironment, addPreProcessorEnvironments, bundleIdPerEnvironment, copyBuildConfiguration } from './xcodeProject'
+import { appNamePerEnvironment, iconsPerEnvironment, addPreProcessorEnvironments, bundleIdPerEnvironment, copyBuildConfiguration } from './xcodeProject'
 
 export default () => {
   console.log('Adding React Native Config')
 
-  copyBuildConfiguration('ios/test.xcodeproj/project.pbxproj', 'Release', 'Staging')
+  const xcodeProjectName = findReactNativeProjectName()
 
   addPreProcessorEnvironments('ios/test.xcodeproj/project.pbxproj')
-  const projectName = findReactNativeProjectName()
 
-  const projectFile = projectFileFromProjectName(projectName)
+  const projectFile = projectFileFromProjectName(xcodeProjectName)
 
   copyBuildConfiguration(projectFile, 'Release', 'Staging')
 
   addPreProcessorEnvironments(projectFile)
 
-  bundleIdPerEnvironment(projectName, 'com.zdev.project')
+  bundleIdPerEnvironment(xcodeProjectName, 'com.zdev.project')
 
-  appNamePerEnvironment(projectName, 'My App')
+  appNamePerEnvironment(xcodeProjectName, 'My App')
+
+  iconsPerEnvironment(xcodeProjectName)
 
   executeCommand('npm install --save-dev react-native-schemes-manager')
 
@@ -42,7 +43,7 @@ export default () => {
   executeCommand('rm package-lock.json && npm install')
 
   replaceInFile({
-    files: `./ios/${projectName}/AppDelegate.m`,
+    files: `./ios/${xcodeProjectName}/AppDelegate.m`,
     from: 'initialProperties:nil',
     to: 'initialProperties:@{@"environment" : ENVIRONMENT}',
   })
@@ -60,15 +61,15 @@ export default () => {
     './android/app/build.gradle',
     `proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }`,
-    `\n    staging {
+    `\n        staging {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }`,
   )
 
   addInFileAfter(
-    `./android/app/src/main/java/com/${projectName}/MainActivity.java`,
-    `return "${projectName}";
+    `./android/app/src/main/java/com/${xcodeProjectName}/MainActivity.java`,
+    `return "${xcodeProjectName}";
     }`,
     `\n    @Override
     protected ReactActivityDelegate createReactActivityDelegate() {
