@@ -88,4 +88,12 @@ export default async () => {
         };
     }`,
   )
+
+  addInFileAfter(
+    `./android/app/src/main/java/com/${xcodeProjectName}/MainActivity.java`,
+    `import com.facebook.react.ReactActivity;`,
+    `\nimport com.facebook.react.ReactActivityDelegate;
+    import android.os.Bundle;
+    import android.support.annotation.Nullable;`,
+  )
 }
