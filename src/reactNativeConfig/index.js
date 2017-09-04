@@ -11,12 +11,13 @@ import { findReactNativeProjectName, projectFileFromProjectName } from './reactN
 
 import { appNamePerEnvironment, iconsPerEnvironment, addPreProcessorEnvironments, bundleIdPerEnvironment, copyBuildConfiguration } from './xcodeProject'
 import { applicationIdSuffixPerEnvironment, appNameSuffixPerEnvironment, setupApkSigning } from './android'
+import setUpProvisioningProfiles from './provisioningProfiles.js'
 
 /* eslint-disable no-useless-concat, no-useless-escape */
 
 export default async () => {
   console.log('Checking prerequisite installs')
-  checkCommandsExist(['npm', 'keytool', 'fastlane'])
+  checkCommandsExist(['npm', 'keytool', 'fastlane', 'xcode-select'])
   console.log('Adding React Native Config')
 
   const bundleId = await prompt('bundleId (e.g. com.zdev.something): ')
@@ -129,4 +130,6 @@ export default async () => {
   copyFiles(path.join(__dirname, 'src/reactNativeConfig/androidAppIcons'), `./android/app/src/`)
 
   setupApkSigning(bundleId)
+
+  setUpProvisioningProfiles()
 }
