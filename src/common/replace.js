@@ -20,3 +20,14 @@ export const addInFileAfter = (file, toReplace, newString) => {
   }
   replace.sync(options)
 }
+
+export const addInFileBefore = (file, toReplace, newString) => {
+  console.log(`\nAdding ${newString} before ${toReplace} in: ${file}`)
+
+  const options = {
+    files: file,
+    from: toReplace,
+    to: `${newString}${toReplace}`,
+  }
+  replace.sync(options)
+}
