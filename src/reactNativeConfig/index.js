@@ -1,5 +1,5 @@
 import { replaceInFile, addInFileAfter } from '~/common/replace'
-import executeCommand from '~/common/executeCommand'
+import executeCommand, { checkCommandsExist } from '~/common/executeCommand'
 import addNpmScript from '~/common/addNpmScript'
 import updateJson from '~/common/updateJson'
 import prompt from 'prompt-promise'
@@ -14,6 +14,8 @@ import { applicationIdSuffixPerEnvironment, appNameSuffixPerEnvironment } from '
 /* eslint-disable no-useless-concat, no-useless-escape */
 
 export default async () => {
+  console.log('Checking prerequisite installs')
+  checkCommandsExist(['npm', 'keytool', 'fastlane'])
   console.log('Adding React Native Config')
 
   const bundleId = await prompt('bundleId (e.g. com.zdev.something): ')
