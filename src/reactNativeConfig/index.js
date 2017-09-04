@@ -3,10 +3,15 @@ import executeCommand from '~/common/executeCommand'
 import addNpmScript from '~/common/addNpmScript'
 import updateJson from '~/common/updateJson'
 import prompt from 'prompt-promise'
+import { copyFiles } from '~/common/copy'
+import path from 'path'
 
 import { findReactNativeProjectName, projectFileFromProjectName } from './reactNative'
 
 import { appNamePerEnvironment, iconsPerEnvironment, addPreProcessorEnvironments, bundleIdPerEnvironment, copyBuildConfiguration } from './xcodeProject'
+import { applicationIdSuffixPerEnvironment, appNameSuffixPerEnvironment } from './android'
+
+/* eslint-disable no-useless-concat, no-useless-escape */
 
 export default async () => {
   console.log('Adding React Native Config')
@@ -45,19 +50,17 @@ export default async () => {
   // package-lock.json had to be removed to make this work.
   executeCommand('rm package-lock.json && npm install')
 
-  replaceInFile({
-    files: `./ios/${xcodeProjectName}/AppDelegate.m`,
-    from: 'initialProperties:nil',
-    to: 'initialProperties:@{@"environment" : ENVIRONMENT}',
-  })
+  replaceInFile(`./ios/${xcodeProjectName}/AppDelegate.m`, 'initialProperties:nil', 'initialProperties:@{@"environment" : ENVIRONMENT}')
 
+  // prettier-ignore
   addInFileAfter(
     './android/app/build.gradle',
     'import com.android.build.OutputFile',
-    `\n\nproject.ext.react = [
-    bundleInStaging: true,
-    bundleInRelease: true
-  ]`,
+    '\n\n' +
+    'project.ext.react = [' +
+    '  bundleInStaging: true,\n' +
+    '  bundleInRelease: true\n' +
+    ']\n',
   )
 
   addInFileAfter(
@@ -77,7 +80,7 @@ export default async () => {
     `\n    @Override
     protected ReactActivityDelegate createReactActivityDelegate() {
         return new ReactActivityDelegate(this, getMainComponentName()) {
-            @Nullable
+          @Nullable
             @Override
             protected Bundle getLaunchOptions() {
                 Bundle initialProps = new Bundle();
@@ -88,11 +91,33 @@ export default async () => {
     }`,
   )
 
+  // prettier-ignore
   addInFileAfter(
     `./android/app/src/main/java/com/${xcodeProjectName}/MainActivity.java`,
     `import com.facebook.react.ReactActivity;`,
-    `\nimport com.facebook.react.ReactActivityDelegate;
-    import android.os.Bundle;
-    import android.support.annotation.Nullable;`,
+    '\n' +
+    'import com.facebook.react.ReactActivityDelegate;\n' +
+    'import android.os.Bundle;\n' +
+    'import android.support.annotation.Nullable;\n'
   )
+
+  // prettier-ignore
+  replaceInFile(
+    './android/app/build.gradle',
+    /applicationId \".*\"/,
+    `applicationId "${bundleId}"`,
+  )
+
+  // prettier-ignore
+  addInFileAfter(
+    './android/app/build.gradle',
+    'buildTypes {',
+    '  debug {\n' +
+    '  }'
+  )
+
+  applicationIdSuffixPerEnvironment()
+  appNameSuffixPerEnvironment(appName)
+
+  copyFiles(path.join(__dirname, 'src/reactNativeConfig/androidAppIcons'), `./android/app/src/`)
 }

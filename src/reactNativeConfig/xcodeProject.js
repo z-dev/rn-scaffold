@@ -1,6 +1,7 @@
 import xcode from 'xcode'
 import _ from 'lodash'
 import fs from 'fs-extra'
+import { copyFiles } from '~/common/copy'
 import { arrayWrap } from '~/common/utils'
 import plist from 'plist'
 import path from 'path'
@@ -86,7 +87,7 @@ export const addPreProcessorEnvironments = projectPath => {
 export const iconsPerEnvironment = projectName => {
   const projectPath = projectFileFromProjectName(projectName)
   console.log(`\nAdding App Icon per environment\n`)
-  fs.copySync(path.join(__dirname, 'src/reactNativeConfig/appIcons'), `ios/${projectName}/Images.xcassets/`)
+  copyFiles(path.join(__dirname, 'src/reactNativeConfig/iosAppIcons'), `ios/${projectName}/Images.xcassets/`)
   fs.remove(`ios/${projectName}/Images.xcassets/AppIcon.appiconset`)
   const xcodeProject = xcodeProjectFromFile(projectPath)
   const buildConfigurations = getBuildConfigurations(projectPath)
