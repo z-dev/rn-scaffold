@@ -5,11 +5,12 @@ import updateJson from '~/common/updateJson'
 import prompt from 'prompt-promise'
 import { copyFiles } from '~/common/copy'
 import path from 'path'
+import indentString from 'indent-string'
 
 import { findReactNativeProjectName, projectFileFromProjectName } from './reactNative'
 
 import { appNamePerEnvironment, iconsPerEnvironment, addPreProcessorEnvironments, bundleIdPerEnvironment, copyBuildConfiguration } from './xcodeProject'
-import { applicationIdSuffixPerEnvironment, appNameSuffixPerEnvironment } from './android'
+import { applicationIdSuffixPerEnvironment, appNameSuffixPerEnvironment, setupApkSigning } from './android'
 
 /* eslint-disable no-useless-concat, no-useless-escape */
 
@@ -114,12 +115,18 @@ export default async () => {
   addInFileAfter(
     './android/app/build.gradle',
     'buildTypes {',
-    '  debug {\n' +
-    '  }'
+    indentString(
+      '\n' +
+      'debug {\n' +
+      '}',
+      8
+    )
   )
 
   applicationIdSuffixPerEnvironment()
   appNameSuffixPerEnvironment(appName)
 
   copyFiles(path.join(__dirname, 'src/reactNativeConfig/androidAppIcons'), `./android/app/src/`)
+
+  setupApkSigning(bundleId)
 }
