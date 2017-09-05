@@ -15,7 +15,7 @@ if (firstArg === 'prettier-lint') {
   reactNativeConfig()
 } else if (firstArg === 'ios-deployment') {
   addIosDeployment()
-} else if (firstArg === 'android-playstore') {
+} else if (firstArg === 'android-deployment') {
   androidPlaystore()
 } else if (firstArg === 'provisioning-profiles') {
   setUpProvisioningProfiles()

@@ -3,6 +3,7 @@ import { copyFiles } from '~/common/copy'
 import addNpmScript from '~/common/addNpmScript'
 import { findReactNativeProjectName } from '~/reactNativeConfig/reactNative'
 import path from 'path'
+import executeCommand from '~/common/executeCommand'
 
 export default async () => {
   console.log('Adding npm deployment scripts')
@@ -19,6 +20,40 @@ export default async () => {
 
   replaceInFile('./bin/pushToITunes.sh', 'WORKSPACE_FILE="ios/.xcworkspace/"', `WORKSPACE_FILE="ios/${xcodeProjectName}.xcworkspace/"`)
   replaceInFile('./bin/pushToITunes.sh', 'SCHEME=""', `SCHEME="${xcodeProjectName}"`)
+
+  executeCommand('sudo chmod 777 ./bin/pushToITunes.sh')
+
+  console.log('installing cocoa pods')
+  executeCommand('cd ios && pod init')
+
+  // prettier-ignore
+  replaceInFile(
+    './ios/Podfile',
+    '# Uncomment the next line to define a global platform for your project',
+    `project '${xcodeProjectName}.xcodeproj/'` +
+    '\n' +
+    '\n' +
+    '# Uncomment the next line to define a global platform for your project'
+  )
+
+  replaceInFile(
+    './ios/Podfile',
+    `target 'test1-tvOS' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for test1-tvOS
+
+  target 'test1-tvOSTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end`,
+    '',
+  )
+
+  executeCommand('cd ios && pod install')
 
   console.log('deployment scripts added look for "deploy:ios:staging" and "deploy:ios:release" in package.json')
 }
