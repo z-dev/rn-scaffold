@@ -3,6 +3,7 @@ import yargs from 'yargs'
 import prettierLint from './prettierLint'
 import reactNativeConfig from './reactNativeConfig'
 import addIosDeployment from './iosDeployment'
+import setUpProvisioningProfiles from './provisioningProfiles'
 
 const firstArg = _.get(yargs.argv, '_[0]')
 
@@ -13,4 +14,6 @@ if (firstArg === 'prettier-lint') {
   reactNativeConfig()
 } else if (firstArg === 'ios-deployment') {
   addIosDeployment()
+} else if (firstArg === 'provisioning-profiles') {
+  setUpProvisioningProfiles()
 }
