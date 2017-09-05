@@ -11,7 +11,6 @@ import { findReactNativeProjectName, projectFileFromProjectName } from './reactN
 
 import { appNamePerEnvironment, iconsPerEnvironment, addPreProcessorEnvironments, bundleIdPerEnvironment, copyBuildConfiguration } from './xcodeProject'
 import { applicationIdSuffixPerEnvironment, appNameSuffixPerEnvironment, setupApkSigning } from './android'
-import setUpProvisioningProfiles from './provisioningProfiles.js'
 
 /* eslint-disable no-useless-concat, no-useless-escape */
 
@@ -130,6 +129,4 @@ export default async () => {
   copyFiles(path.join(__dirname, 'src/reactNativeConfig/androidAppIcons'), `./android/app/src/`)
 
   setupApkSigning(bundleId)
-
-  setUpProvisioningProfiles()
 }
