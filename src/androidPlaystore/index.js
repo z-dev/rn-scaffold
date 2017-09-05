@@ -16,6 +16,10 @@ const applicationIdFromBuildGradle = async () => {
   return _.get(gradleBuild, 'android.defaultConfig.applicationId')
 }
 
+const deployScript = (buildType, applicationId) => {
+  return `${buildApkCommand(_.upperFirst(buildType))} && npm run android:increment && ${supplyCommand(buildType, './android/playServiceAccount.json', applicationId)}`
+}
+
 export default async () => {
   checkCommandsExist(['fastlane'])
 
@@ -34,8 +38,11 @@ export default async () => {
   executeCommand(buildApkCommand('Staging'))
   executeCommand(buildApkCommand('Release'))
 
-  addNpmScript('deploy:android:staging', `${buildApkCommand('Staging')} && ${supplyCommand('staging', './android/playServiceAccount.json', applicationId)}`)
-  addNpmScript('deploy:android:release', `${buildApkCommand('Release')} && ${supplyCommand('release', './android/playServiceAccount.json', applicationId)}`)
+  executeCommand('npm install react-native-version')
+
+  addNpmScript('android:increment', `react-native-version --target android --increment-build`)
+  addNpmScript('deploy:android:staging', deployScript('staging', applicationId))
+  addNpmScript('deploy:android:release', deployScript('release', applicationId))
 
   console.log(
     `Your turn!
