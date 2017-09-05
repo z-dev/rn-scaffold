@@ -7,8 +7,9 @@ import path from 'path'
 export default async () => {
   console.log('Adding npm deployment scripts')
 
-  addNpmScript('deploy:ios:staging', 'NODE_ENV=Staging bin/pushToITunes.sh')
-  addNpmScript('deploy:ios:release', 'NODE_ENV=Release bin/pushToITunes.sh')
+  addNpmScript('deploy:ios:staging', 'CONFIGURATION=Staging bin/pushToITunes.sh')
+  addNpmScript('deploy:ios:release', 'CONFIGURATION=Release bin/pushToITunes.sh')
+  addNpmScript('ios:increment', `react-native-version --target ios --increment-build`)
 
   const xcodeProjectName = findReactNativeProjectName()
 
