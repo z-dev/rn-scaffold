@@ -16,7 +16,7 @@ import { applicationIdSuffixPerEnvironment, appNameSuffixPerEnvironment, setupAp
 
 export default async () => {
   console.log('Checking prerequisite installs')
-  checkCommandsExist(['npm', 'keytool', 'fastlane', 'xcode-select'])
+  checkCommandsExist(['npm', 'keytool', 'fastlane'])
   console.log('Adding React Native Config')
 
   const bundleId = await prompt('bundleId (e.g. com.zdev.something): ')
