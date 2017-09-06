@@ -21,7 +21,7 @@ export default async () => {
   replaceInFile('./bin/pushToITunes.sh', 'WORKSPACE_FILE="ios/.xcworkspace/"', `WORKSPACE_FILE="ios/${xcodeProjectName}.xcworkspace/"`)
   replaceInFile('./bin/pushToITunes.sh', 'SCHEME=""', `SCHEME="${xcodeProjectName}"`)
 
-  executeCommand('sudo chmod 777 ./bin/pushToITunes.sh')
+  executeCommand('chmod u+x ./bin/pushToITunes.sh')
 
   console.log('installing cocoa pods')
   executeCommand('cd ios && pod init')
@@ -38,13 +38,13 @@ export default async () => {
 
   replaceInFile(
     './ios/Podfile',
-    `target 'test1-tvOS' do
+    `target '${xcodeProjectName}-tvOS' do
   # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
   # use_frameworks!
 
-  # Pods for test1-tvOS
+  # Pods for ${xcodeProjectName}-tvOS
 
-  target 'test1-tvOSTests' do
+  target '${xcodeProjectName}-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end
