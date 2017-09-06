@@ -2,6 +2,7 @@ import _ from 'lodash'
 import yargs from 'yargs'
 import prettierLint from './prettierLint'
 import reactNativeConfig from './reactNativeConfig'
+import addIosDeployment from './iosDeployment'
 import androidPlaystore from './androidPlaystore'
 import setUpProvisioningProfiles from './provisioningProfiles'
 
@@ -12,7 +13,9 @@ if (firstArg === 'prettier-lint') {
   prettierLint()
 } else if (firstArg === 'react-native-config') {
   reactNativeConfig()
-} else if (firstArg === 'android-playstore') {
+} else if (firstArg === 'ios-deployment') {
+  addIosDeployment()
+} else if (firstArg === 'android-deployment') {
   androidPlaystore()
 } else if (firstArg === 'provisioning-profiles') {
   setUpProvisioningProfiles()

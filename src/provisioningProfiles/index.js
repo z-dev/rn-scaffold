@@ -1,5 +1,6 @@
 import executeCommand, { checkCommandsExist } from '~/common/executeCommand'
 import prompt from 'prompt-promise'
+import addNpmScript from '~/common/addNpmScript'
 
 export default async () => {
   console.log('Checking prerequisite installs')
@@ -24,4 +25,6 @@ export default async () => {
   console.log('Createing AppStore certificates')
 
   executeCommand('fastlane match appstore')
+
+  addNpmScript('apple:sync', 'fastlane match development --readonly && fastlane match appstore --readonly')
 }
