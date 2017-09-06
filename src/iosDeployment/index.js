@@ -35,7 +35,7 @@ export default async () => {
     '\n' +
     '# Uncomment the next line to define a global platform for your project'
   )
-
+  // pod init is creating 2 instances of the tvOS pod commands so one of them is getting removed here
   replaceInFile(
     './ios/Podfile',
     `target '${xcodeProjectName}-tvOS' do
