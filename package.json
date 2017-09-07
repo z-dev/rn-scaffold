@@ -6,6 +6,9 @@
   "bin": {
     "rn-scaffold": "./build/bin.js"
   },
+  "repository": {
+    "url": "https://github.com/z-dev/rn-scaffold.git"
+  },
   "scripts": {
     "build": "rm -rf ./build && neutrino build --use neutrino-preset-node && cp ./src/bin.js ./build/ && find src/ | grep -v -i .js$ | cpio -pdm ./build",
     "check:node": "check-node-version --node \">=8.1.2 <9\"",
