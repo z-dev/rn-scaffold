@@ -1,18 +1,21 @@
 {
-  "name": "scaffolding",
-  "version": "1.0.0",
+  "name": "rn-scaffold",
+  "version": "0.0.9",
   "description": "",
   "license": "ISC",
+  "bin": {
+    "rn-scaffold": "./build/bin.js"
+  },
   "scripts": {
-    "build": "rm -rf ./build && neutrino build --use neutrino-preset-node && find src/ | grep -v -i .js$ | cpio -pdm ./build",
+    "build": "rm -rf ./build && neutrino build --use neutrino-preset-node && cp ./src/bin.js ./build/ && find src/ | grep -v -i .js$ | cpio -pdm ./build",
     "check:node": "check-node-version --node \">=8.1.2 <9\"",
     "ci": "npm run lint && npm run test",
     "clean": "rm -rf dist",
     "precommit": "lint-staged && npm run lint",
     "eslint-check": "eslint --print-config .eslintrc | eslint-config-prettier-check",
     "format:js": "npm run prettier -- \"src/**/*.js\"",
-    "postinstall": "npm run check:node",
     "lint": "eslint ./src ./test --ext=js",
+    "prepublish": "npm run build",
     "start": "neutrino start --use neutrino-preset-node",
     "start:built": "forever build/index.js",
     "start:debug": "npm run start -- --debug",
@@ -61,7 +64,7 @@
     "sort-package-json": "^1.7.1"
   },
   "engines": {
-    "node": ">= 7.9.0"
+    "node": ">= 8.1.2"
   },
   "engine-strict": true,
   "lint-staged": {
