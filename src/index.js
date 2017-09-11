@@ -20,6 +20,6 @@ if (firstArg === 'prettier-lint') {
   androidPlaystore()
 } else if (firstArg === 'provisioning-profiles') {
   setUpProvisioningProfiles()
-} else if (firstArg === 'test') {
+} else if (firstArg === 'notifications') {
   notifications()
 }
