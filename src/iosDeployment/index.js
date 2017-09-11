@@ -26,6 +26,12 @@ export default async () => {
   console.log('installing cocoa pods')
   executeCommand('cd ios && pod init')
 
+  replaceInFile('./ios/Podfile', "# platform :ios, '9.0'", "platform :ios, '9.0'")
+
+  executeCommand('cd ios && pod outdated')
+
+  executeCommand('cd ios && pod update')
+
   // prettier-ignore
   replaceInFile(
     './ios/Podfile',
