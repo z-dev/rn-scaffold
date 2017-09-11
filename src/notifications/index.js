@@ -12,14 +12,11 @@ export default async () => {
 
   const projectName = findReactNativeProjectName()
 
-  console.log(`for Android: download google-services.json file and place it in android/app directory
-for iOS: download GoogleService-Info.plist file and place it in /ios/your-project-name directory (next to your Info.plist)`)
-
   executeCommand(`fastlane pem -a ${appId}.debug -u ${userName} --force `)
   executeCommand(`fastlane pem -a ${appId}.staging -u ${userName} --force`)
   executeCommand(`fastlane pem -a ${appId}.release -u ${userName} --force`)
 
-  console.log('You will need to rebuild your provisioning profiles on https://developer.apple.com/account/ios/profile/ Simply click on the profiles and select edit generate')
+  console.log('You will need to rebuild your provisioning profiles on https://developer.apple.com/account/ios/profile/ Simply click on the profiles and select edit -> generate')
   console.log('you will then need to run the apple sync command to sync your new profiles with the ones on your local machine')
   const response = await prompt('Have you completed the previously logged steps? (y/n)')
   if (response !== 'y') {
@@ -120,7 +117,8 @@ for iOS: download GoogleService-Info.plist file and place it in /ios/your-projec
   console.log(
     `You will need to download 3 GoogleService-Info.plist files, each one should be renamed to include -Debug, -Staging and -Release according to the build environment it represents`,
   )
-  console.log(`place these files in ios/your_app (inside xcode & in you porjects folder hierarchy) where your current info.plist file is found`)
+  console.log(`place these files in your projects ios/your_app (inside xcode & in you porjects folder hierarchy) where your current info.plist file is found`)
   console.log(`For android you will need to create 3 folders debug, staging and release under android/app/src and drag the corresponding google-service.json file into it`)
   console.log(`now follow the steps found here under usage https://github.com/evollu/react-native-fcm to start sending notifications`)
+  console.log(`If you would like to undo the changes made by this command just run this command: git reset --hard && git clean -f -d`)
 }
