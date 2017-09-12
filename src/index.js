@@ -5,6 +5,7 @@ import reactNativeConfig from './reactNativeConfig'
 import addIosDeployment from './iosDeployment'
 import androidPlaystore from './androidPlaystore'
 import setUpProvisioningProfiles from './provisioningProfiles'
+import notifications from './notifications'
 
 const firstArg = _.get(yargs.argv, '_[0]')
 
@@ -19,4 +20,6 @@ if (firstArg === 'prettier-lint') {
   androidPlaystore()
 } else if (firstArg === 'provisioning-profiles') {
   setUpProvisioningProfiles()
+} else if (firstArg === 'notifications') {
+  notifications()
 }
