@@ -1,24 +1,45 @@
+## rn-scaffold
+
+rn-scaffold is a tool to help automate setting up the common parts of a react-native project.
+
+It's opinionated, and is what we used for production real-life React Native projects.
+
 ## Getting started
 
-First run: `npm install`
+Install rn scaffold using: `npm install -g rn-scaffold`
 
-Then run:
+Use `react-native init to create your new empty react native project and your good to go with running the following commands
 
-* Run `npm run build` to run the app
-* then run `node build/index.js args-go-here`
+## Usage
 
-### Debugging
+If in doubt commands should be run in order listed below to avoid any errors!
 
-Run `npm run start:debug` and then open the link provided to you to debug.
+`rn-scaffold prettier`
+- Adds eslint, prettier and lint-staged to your project.
 
-If your process doesn't run for long (It's not a web server or something). Then the debugger won't attach before the program finishes!
+`rn-scaffold react-native-config`
+- adds different build environments debug, staging and release to ios and android.
+- adds different bundleIds and app names per environment, e.g. com.myApp.debug, myApp debug ect
+- adds different app icons per environment
+- adds [`react-native-schemes-manager`](https://github.com/Thinkmill/react-native-schemes-manager) to manage adding new environment to ios project
+- adds code snippets to pass current environmet though intialProps into react-native app to allow correct config to be loaded
+- add generates apk signing key stores for android environments
 
-`npm run start:debug -- --debug-brk` <- pauses the program on the first line so you can attach with plenty of time.
+`rn-scaffold provisioning-profiles` (Requires manual steps that user needs complete, see logs for details)
+- generates provisioning profiles per environment (debug, staging, release) for ios app on developer.apple.com
+- syncs generated provisioning profiles to local machine
 
-At this point you'll notice your files aren't in the debugger, so you still can't debug.
 
-You can fix this using `debugger;` in your code:
+`rn-scaffolding ios-deployment` (Requires `rn-scaffold provisioning-profiles` command to have been run first)
+- adds deployment npm scripts for staging and release builds of app to app store
+- adds `pushToITunes.sh` script to build ipa files and push them to itunes connect
+- adds cocoa pods to app to create .xcworkspace file to generate ipa from
 
-Add a `debugger;` line in your code somewhere.
 
-Now debug again. When you press play, you'll go to that `debugger` line you set. Everything works fine from there.
+`rn-scaffolding android-deployment`
+- adds deployment npm scripts for staging and release builds of app to play store
+
+`rn-scaffolding notifications` (Requires `rn-scaffold provisioning-profiles` to have been run and cocoa pods to be installed. Requires a lot of manual user steps, see logs or details)
+- generates ios certificates for push notifications per environment (debug, staging, release)
+- adds FirebaseMessaging pod and installs react-native-fcm
+- adds code to ios to handle multiple bundleIds for GoogleService-Info.plist files
