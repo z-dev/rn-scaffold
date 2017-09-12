@@ -43,3 +43,11 @@ If in doubt commands should be run in order listed below to avoid any errors!
 - generates ios certificates for push notifications per environment (debug, staging, release)
 - adds FirebaseMessaging pod and installs react-native-fcm
 - adds code to ios to handle multiple bundleIds for GoogleService-Info.plist files
+
+## Using with git
+
+Before running each script make sure you have no changes in git. 
+
+Once you're done use `git diff` to see the changes the scripts have made. 
+
+To rollback use: `git reset --hard && git clean -f -d`
