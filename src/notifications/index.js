@@ -80,6 +80,8 @@ export default async () => {
     Background Modes > Remote notifications.
     These can be found in your projects Capabilities tab`)
 
+  await prompt('Have you completed the previously logged steps? (y/n)')
+
   addInFileAfter('./android/build.gradle', "classpath 'com.android.tools.build:gradle:2.2.3'", "\nclasspath 'com.google.gms:google-services:3.0.0'")
 
   addInFileAfter('./android/app/build.gradle', 'apply plugin: "com.android.application"', "\napply plugin: 'com.google.gms.google-services'")
