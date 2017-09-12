@@ -1,6 +1,8 @@
 ## rn-scaffold
 
-rn-scaffold is a tool to help make setting up the common parts of a react-native project that are repeated nearly everytime
+rn-scaffold is a tool to help automate setting up the common parts of a react-native project.
+
+It's opinionated, and is what we used for production real-life React Native projects.
 
 ## Getting started
 
@@ -10,7 +12,7 @@ Use `react-native init to create your new empty react native project and your go
 
 ## Usage
 
-commands should be run in order listed below to avoid any errors!
+If in doubt commands should be run in order listed below to avoid any errors!
 
 `rn-scaffold prettier`
 - Adds eslint, prettier and lint-staged to your project.
@@ -18,8 +20,8 @@ commands should be run in order listed below to avoid any errors!
 `rn-scaffold react-native-config`
 - adds different build environments debug, staging and release to ios and android.
 - adds different bundleIds and app names per environment, e.g. com.myApp.debug, myApp debug ect
-- adds different app icons per enrivronment
-- adds `react-native-schemes-manager` to manage adding new environment to ios project
+- adds different app icons per environment
+- adds [`react-native-schemes-manager`](https://github.com/Thinkmill/react-native-schemes-manager) to manage adding new environment to ios project
 - adds code snippets to pass current environmet though intialProps into react-native app to allow correct config to be loaded
 - add generates apk signing key stores for android environments
 
