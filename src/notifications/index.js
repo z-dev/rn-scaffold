@@ -12,9 +12,9 @@ export default async () => {
 
   const projectName = findReactNativeProjectName()
 
-  executeCommand(`fastlane pem -a ${appId}.debug -u ${userName} --force `)
+  executeCommand(`fastlane pem -a ${appId}.debug -u ${userName} --force`)
   executeCommand(`fastlane pem -a ${appId}.staging -u ${userName} --force`)
-  executeCommand(`fastlane pem -a ${appId}.release -u ${userName} --force`)
+  executeCommand(`fastlane pem -a ${appId} -u ${userName} --force`)
 
   console.log('You will need to rebuild your provisioning profiles on https://developer.apple.com/account/ios/profile/ Simply click on the profiles and select edit -> generate')
   console.log('you will then need to run the apple sync command to sync your new profiles with the ones on your local machine')

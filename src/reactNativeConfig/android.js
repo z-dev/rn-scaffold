@@ -16,7 +16,6 @@ const addApplicationIdSuffixForBuildType = buildType => {
 export const applicationIdSuffixPerEnvironment = () => {
   addApplicationIdSuffixForBuildType('debug')
   addApplicationIdSuffixForBuildType('staging')
-  addApplicationIdSuffixForBuildType('release')
 }
 
 export const appNameSuffixPerEnvironment = appName => {

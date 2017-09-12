@@ -61,8 +61,9 @@ export const bundleIdPerEnvironment = (projectName, bundleIdPrefix) => {
   const xcodeProject = xcodeProjectFromFile(projectPath)
   const buildConfigurations = getBuildConfigurations(projectPath)
   _.forEach(buildConfigurations, buildConfiguration => {
+    const buildConfigurationSuffix = buildConfiguration === 'RELEASE' ? '' : `.${_.toLower(buildConfiguration)}`
     const projectBuildConfig = findProjectBuildConfig(xcodeProject, buildConfiguration)
-    const bundleId = `${bundleIdPrefix}.${_.toLower(buildConfiguration)}`
+    const bundleId = `${bundleIdPrefix}${buildConfigurationSuffix}`
     console.log(`\nSetting up a bundle id for ${buildConfiguration}: ${bundleId}\n`)
     projectBuildConfig.buildSettings.PRODUCT_BUNDLE_IDENTIFIER = bundleId
   })
