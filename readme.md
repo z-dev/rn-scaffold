@@ -8,7 +8,7 @@ It's opinionated, and is what we used for production real-life React Native proj
 
 Install rn scaffold using: `npm install -g rn-scaffold`
 
-Use `react-native init to create your new empty react native project and your good to go with running the following commands
+Use `react-native init --version react-native@0.48.1` to create your new empty react native project and your good to go with running the following commands
 
 ## Usage
 
@@ -46,8 +46,8 @@ If in doubt commands should be run in order listed below to avoid any errors!
 
 ## Using with git
 
-Before running each script make sure you have no changes in git. 
+Before running each script make sure you have no changes in git.
 
-Once you're done use `git diff` to see the changes the scripts have made. 
+Once you're done use `git diff` to see the changes the scripts have made.
 
 To rollback use: `git reset --hard && git clean -f -d`
