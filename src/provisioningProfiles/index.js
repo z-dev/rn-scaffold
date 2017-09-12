@@ -23,12 +23,12 @@ export default async () => {
 
   console.log('Creating development certificates')
 
-  executeCommand(`fastlane match development -a ${appId}.debug -u ${userName} `)
+  executeCommand(`fastlane match development -a ${appId}.debug -u ${userName}`)
 
   console.log('Createing AppStore certificates')
 
-  executeCommand(`fastlane match appstore -a ${appId}.staging -u ${userName} `)
-  executeCommand(`fastlane match appstore -a ${appId}.release -u ${userName} `)
+  executeCommand(`fastlane match appstore -a ${appId}.staging -u ${userName}`)
+  executeCommand(`fastlane match appstore -a ${appId} -u ${userName}`)
 
   addNpmScript('apple:sync', 'fastlane match development --readonly && fastlane match appstore --readonly')
 }
