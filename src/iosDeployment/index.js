@@ -57,5 +57,8 @@ end`,
 
   executeCommand('cd ios && pod install')
 
+  console.log("Go to https://itunesconnect.apple.com go to 'My Apps' and add your apps (with the correct bundle id).")
+  await prompt('Have you completed the previous steps? (y/n)')
+
   console.log('deployment scripts added look for "deploy:ios:staging" and "deploy:ios:release" in package.json')
 }
