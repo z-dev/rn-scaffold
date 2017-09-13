@@ -31,4 +31,7 @@ export default async () => {
   executeCommand(`fastlane match appstore -a ${appId} -u ${userName}`)
 
   addNpmScript('apple:sync', 'fastlane match development --readonly && fastlane match appstore --readonly')
+  console.log('Other team members need to run `npm run apple:sync` after they check-out the project.')
+  console.log('Open xcode, go to project settings -> general -> untick Automatically manage signing -> select the match provisioning profiles for each build environment')
+  await prompt('Have you completed the previous steps? (y/n)')
 }
