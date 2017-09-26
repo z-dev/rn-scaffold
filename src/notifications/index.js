@@ -54,9 +54,20 @@ export default async () => {
   addInFileAfter(
     `./ios/${projectName}/AppDelegate.m`,
     '[self.window makeKeyAndVisible];',
-    '\n[FIRApp configure];\n' +
-    '[[UNUserNotificationCenter currentNotificationCenter] setDelegate:self];'
 
+    `\nNSString *filePath = NULL;
+
+  if(ENVIRONMENT == @"DEBUG"){
+    filePath = [[NSBundle mainBundle] pathForResource:@"GoogleService-Info-Debug" ofType:@"plist"];
+  }
+  else if(ENVIRONMENT == @"STAGING"){
+    filePath = [[NSBundle mainBundle] pathForResource:@"GoogleService-Info-Staging" ofType:@"plist"];
+  }
+  else {
+    filePath = [[NSBundle mainBundle] pathForResource:@"GoogleService-Info-Release" ofType:@"plist"];
+  }
+  FIROptions *options = [[FIROptions alloc] initWithContentsOfFile:filePath];
+  [FIRApp configureWithOptions:options];  [[UNUserNotificationCenter currentNotificationCenter] setDelegate:self];`
   )
 
   replaceInFile(
