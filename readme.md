@@ -14,7 +14,7 @@ Use `react-native init --version react-native@0.48.1` to create your new empty r
 
 If in doubt commands should be run in order listed below to avoid any errors!
 
-`rn-scaffold prettier`
+`rn-scaffold prettier-lint`
 - Adds eslint, prettier and lint-staged to your project.
 
 `rn-scaffold react-native-config`
