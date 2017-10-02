@@ -30,16 +30,16 @@ If in doubt commands should be run in order listed below to avoid any errors!
 - syncs generated provisioning profiles to local machine
 
 
-`rn-scaffolding ios-deployment` (Requires `rn-scaffold provisioning-profiles` command to have been run first)
+`rn-scaffold ios-deployment` (Requires `rn-scaffold provisioning-profiles` command to have been run first)
 - adds deployment npm scripts for staging and release builds of app to app store
 - adds `pushToITunes.sh` script to build ipa files and push them to itunes connect
 - adds cocoa pods to app to create .xcworkspace file to generate ipa from
 
 
-`rn-scaffolding android-deployment`
+`rn-scaffold android-deployment`
 - adds deployment npm scripts for staging and release builds of app to play store
 
-`rn-scaffolding notifications` (Requires `rn-scaffold provisioning-profiles` to have been run and cocoa pods to be installed. Requires a lot of manual user steps, see logs or details)
+`rn-scaffold notifications` (Requires `rn-scaffold provisioning-profiles` to have been run and cocoa pods to be installed. Requires a lot of manual user steps, see logs or details)
 - generates ios certificates for push notifications per environment (debug, staging, release)
 - adds FirebaseMessaging pod and installs react-native-fcm
 - adds code to ios to handle multiple bundleIds for GoogleService-Info.plist files
