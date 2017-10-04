@@ -8,8 +8,8 @@ import executeCommand from '~/common/executeCommand'
 export default async () => {
   console.log('Adding npm deployment scripts')
 
-  addNpmScript('deploy:ios:staging', 'CONFIGURATION=Staging bin/pushToITunes.sh')
-  addNpmScript('deploy:ios:release', 'CONFIGURATION=Release bin/pushToITunes.sh')
+  addNpmScript('deploy:ios:staging', 'npm run ios:increment && CONFIGURATION=Staging bin/pushToITunes.sh')
+  addNpmScript('deploy:ios:release', 'npm run ios:increment && CONFIGURATION=Release bin/pushToITunes.sh')
   addNpmScript('ios:increment', `react-native-version --target ios --increment-build`)
 
   const xcodeProjectName = findReactNativeProjectName()

@@ -41,8 +41,8 @@ export default async () => {
   executeCommand('npm install react-native-version')
 
   addNpmScript('android:increment', `react-native-version --target android --increment-build`)
-  addNpmScript('deploy:android:staging', deployScript('staging', applicationId))
-  addNpmScript('deploy:android:release', deployScript('release', applicationId))
+  addNpmScript('deploy:android:staging', `npm run android:increment && ${deployScript('staging', applicationId)}`)
+  addNpmScript('deploy:android:release', `npm run android:increment && ${deployScript('release', applicationId)}`)
 
   console.log(
     `Your turn!

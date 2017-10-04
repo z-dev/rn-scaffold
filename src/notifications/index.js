@@ -47,7 +47,9 @@ export default async () => {
     `./ios/${projectName}/AppDelegate.m`,
     '#import "AppDelegate.h"',
     '\n' +
-    '#import "RNFIRMessaging.h"'
+    '#import "RNFIRMessaging.h"' +
+    '\n' +
+    '#import <FirebaseCore/FIROptions.h>'
   )
 
   // prettier-ignore
@@ -57,10 +59,10 @@ export default async () => {
 
     `\nNSString *filePath = NULL;
 
-  if(ENVIRONMENT == @"DEBUG"){
+  if([@"DEBUG" isEqualToString: ENVIRONMENT]){
     filePath = [[NSBundle mainBundle] pathForResource:@"GoogleService-Info-Debug" ofType:@"plist"];
   }
-  else if(ENVIRONMENT == @"STAGING"){
+  else if([@"STAGING" isEqualToString: ENVIRONMENT]){
     filePath = [[NSBundle mainBundle] pathForResource:@"GoogleService-Info-Staging" ofType:@"plist"];
   }
   else {
