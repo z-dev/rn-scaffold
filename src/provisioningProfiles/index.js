@@ -11,7 +11,9 @@ export default async () => {
 
   console.log('Please go to https://developer.apple.com/account and access Certificates, Identifiers & Profiles')
   console.log(`Under Identifiers > App IDs. Add new App IDs for ${appId}.debug, ${appId}.staging and ${appId}`)
-  console.log('Add a IOS device to the Devices tab in Certificates, Identifiers & Profiles, you device UUID can be found in xcode under window > devices when it is plugged in')
+  console.log(
+    "If there isn't one already. Add a IOS device to the Devices tab in Certificates, Identifiers & Profiles, you device UUID can be found in xcode under window > devices when it is plugged in",
+  )
 
   const response = await prompt('Have you completed the previously logged steps? (y/n)')
 
@@ -32,7 +34,11 @@ export default async () => {
   executeCommand(`fastlane match appstore -a ${appId}.staging -u ${userName}`)
   executeCommand(`fastlane match appstore -a ${appId} -u ${userName}`)
 
-  addNpmScript('apple:sync', 'fastlane match development --readonly && fastlane match appstore --readonly')
+  addNpmScript(
+    'apple:sync',
+    `fastlane match development --app_identifier ${appId}.staging,${appId}.debug,${appId}.staging && fastlane match appstore --readonly --app_identifier ${appId}.staging,${appId}.staging`,
+  )
+
   console.log('Other team members need to run `npm run apple:sync` after they check-out the project.')
   console.log(
     'Open xcode, go to project settings -> general -> untick Automatically manage signing -> select the match provisioning profiles for each build environment \n\n For debug: select match Development. \n For Staging & Release: select match AppStore',

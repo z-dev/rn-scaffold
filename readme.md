@@ -1,8 +1,14 @@
 ## rn-scaffold
 
-rn-scaffold is a tool to help automate setting up the common parts of a react-native project.
+rn-scaffold is a tool to help automate setting up the common parts of a react-native project:
 
-It's opinionated, and is what we used for production real-life React Native projects.
+* Different environments, debug, staging and release
+* Provisioning profiles using match
+* Deployment to Testflight and Playstore
+* Notifications with firebase
+
+
+It's opinionated, designed for real-life apps. We built it after building 5+ apps and doing the same steps over and over and screwing them up.
 
 ## Getting started
 
@@ -52,5 +58,6 @@ If in doubt commands should be run in order listed below to avoid any errors!
 ## Running Locally
 
 You can test local changes by doing something like:
-```(cd ../../scaffolding && npm i && npm build) && node ../../scaffolding/build/bin.js react-native-config
+```
+(cd ../../scaffolding && npm i && npm build) && node ../../scaffolding/build/bin.js react-native-config
 ```
