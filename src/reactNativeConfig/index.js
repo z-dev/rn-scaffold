@@ -19,7 +19,7 @@ export default async () => {
   checkCommandsExist(['npm', 'keytool', 'fastlane'])
   console.log('Adding React Native Config')
 
-  const bundleId = await prompt('bundleId (will overwrite any existing bundleId) keep it short e.g. x.y e.g. com.myapp): ')
+  const bundleId = await prompt('bundleId (will overwrite any existing bundleId) keep it short e.g. com.zdev.something): ')
   const appName = await prompt('App Name (e.g. Expresso): ')
 
   const xcodeProjectName = findReactNativeProjectName()

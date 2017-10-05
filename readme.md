@@ -8,8 +8,6 @@ It's opinionated, and is what we used for production real-life React Native proj
 
 Install rn scaffold using: `npm install -g rn-scaffold`
 
-Use `react-native init --version react-native@0.48.4` to create your new empty react native project and your good to go with running the following commands
-
 In general we'll only be supporting the last minor version of the previous version of React Native (since this one is the most stable).
 
 ## Usage
