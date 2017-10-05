@@ -8,13 +8,18 @@ It's opinionated, and is what we used for production real-life React Native proj
 
 Install rn scaffold using: `npm install -g rn-scaffold`
 
-Use `react-native init --version react-native@0.48.1` to create your new empty react native project and your good to go with running the following commands
+Use `react-native init --version react-native@0.48.4` to create your new empty react native project and your good to go with running the following commands
 
 In general we'll only be supporting the last minor version of the previous version of React Native (since this one is the most stable).
 
 ## Usage
 
 If in doubt commands should be run in order listed below to avoid any errors!
+
+`rn-scaffold react-native-init`
+- runs react-native init
+- renames your project correctly and updates the android package / file structure
+- to switch react-native version use the flag `--react-native-version`
 
 `rn-scaffold prettier-lint`
 - Adds eslint, prettier and lint-staged to your project.
