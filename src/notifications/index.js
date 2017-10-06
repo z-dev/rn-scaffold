@@ -11,19 +11,22 @@ export default async () => {
   const userName = await prompt('Please enter you AppleID username: ')
 
   const projectName = findReactNativeProjectName()
-
-  executeCommand(`fastlane pem -a ${appId}.debug -u ${userName} --force`)
-  executeCommand(`fastlane pem -a ${appId}.staging -u ${userName} --force`)
-  executeCommand(`fastlane pem -a ${appId} -u ${userName} --force`)
+  const notificationCertificates = './notificationCertificates'
+  executeCommand(`mkdir -p ${notificationCertificates}`)
+  executeCommand(`fastlane pem -a ${appId}.debug -u ${userName} --force --output_path ${notificationCertificates}`)
+  executeCommand(`fastlane pem -a ${appId}.staging -u ${userName} --force --output_path ${notificationCertificates}`)
+  executeCommand(`fastlane pem -a ${appId} -u ${userName} --force --output_path ${notificationCertificates}`)
 
   console.log('You will need to rebuild your provisioning profiles on https://developer.apple.com/account/ios/profile/ Simply click on the profiles and select edit -> generate')
-  console.log('you will then need to run the apple sync command to sync your new profiles with the ones on your local machine')
   const response = await prompt('Have you completed the previously logged steps? (y/n)')
   if (response !== 'y') {
     executeCommand('git reset --hard && git clean -f -d')
     console.log('all changes reset please try agian')
     process.exit(1)
   }
+
+  executeCommand('npm run apple:sync')
+
   addInFileAfter(
     './ios/Podfile',
     `# Pods for ${projectName}`,
@@ -47,7 +50,9 @@ export default async () => {
     `./ios/${projectName}/AppDelegate.m`,
     '#import "AppDelegate.h"',
     '\n' +
-    '#import "RNFIRMessaging.h"'
+    '#import "RNFIRMessaging.h"' +
+    '\n' +
+    '#import <FirebaseCore/FIROptions.h>'
   )
 
   // prettier-ignore
@@ -57,10 +62,10 @@ export default async () => {
 
     `\nNSString *filePath = NULL;
 
-  if(ENVIRONMENT == @"DEBUG"){
+  if([@"DEBUG" isEqualToString: ENVIRONMENT]){
     filePath = [[NSBundle mainBundle] pathForResource:@"GoogleService-Info-Debug" ofType:@"plist"];
   }
-  else if(ENVIRONMENT == @"STAGING"){
+  else if([@"STAGING" isEqualToString: ENVIRONMENT]){
     filePath = [[NSBundle mainBundle] pathForResource:@"GoogleService-Info-Staging" ofType:@"plist"];
   }
   else {

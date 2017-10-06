@@ -4,12 +4,13 @@ import addNpmScript from '~/common/addNpmScript'
 import { findReactNativeProjectName } from '~/reactNativeConfig/reactNative'
 import path from 'path'
 import executeCommand from '~/common/executeCommand'
+import prompt from 'prompt-promise'
 
 export default async () => {
   console.log('Adding npm deployment scripts')
 
-  addNpmScript('deploy:ios:staging', 'CONFIGURATION=Staging bin/pushToITunes.sh')
-  addNpmScript('deploy:ios:release', 'CONFIGURATION=Release bin/pushToITunes.sh')
+  addNpmScript('deploy:ios:staging', 'npm run ios:increment && CONFIGURATION=Staging bin/pushToITunes.sh')
+  addNpmScript('deploy:ios:release', 'npm run ios:increment && CONFIGURATION=Release bin/pushToITunes.sh')
   addNpmScript('ios:increment', `react-native-version --target ios --increment-build`)
 
   const xcodeProjectName = findReactNativeProjectName()
@@ -57,7 +58,7 @@ end`,
 
   executeCommand('cd ios && pod install')
 
-  console.log("Go to https://itunesconnect.apple.com go to 'My Apps' and add your apps (with the correct bundle id).")
+  console.log("Go to https://itunesconnect.apple.com go to 'My Apps' and add your apps (with the correct bundle ids).")
   await prompt('Have you completed the previous steps? (y/n)')
 
   console.log('deployment scripts added look for "deploy:ios:staging" and "deploy:ios:release" in package.json')

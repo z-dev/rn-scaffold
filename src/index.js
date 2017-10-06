@@ -2,6 +2,7 @@ import _ from 'lodash'
 import yargs from 'yargs'
 import { errorIfNotClean, printResetInstructions } from '~/common/git'
 import prettierLint from './prettierLint'
+import reactNativeInit from './reactNativeInit'
 import reactNativeConfig from './reactNativeConfig'
 import addIosDeployment from './iosDeployment'
 import androidPlaystore from './androidPlaystore'
@@ -10,12 +11,15 @@ import notifications from './notifications'
 
 const firstArg = _.get(yargs.argv, '_[0]')
 const run = async () => {
+  const isReactNativeInit = firstArg === 'react-native-init'
   try {
-    if (!yargs.argv.allowDirtyGit) {
+    if (!yargs.argv.allowDirtyGit && !isReactNativeInit) {
       errorIfNotClean()
     }
     if (firstArg === 'prettier-lint') {
       prettierLint()
+    } else if (isReactNativeInit) {
+      await reactNativeInit(yargs.argv)
     } else if (firstArg === 'react-native-config') {
       await reactNativeConfig()
     } else if (firstArg === 'ios-deployment') {
