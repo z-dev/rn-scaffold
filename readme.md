@@ -1,5 +1,7 @@
 ## rn-scaffold
 
+*Warning*: This is in beta: we've successfully used it with one or two projects though.
+
 rn-scaffold is a tool to help automate setting up the common parts of a react-native project:
 
 * Different environments, debug, staging and release
