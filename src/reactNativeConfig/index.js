@@ -60,8 +60,9 @@ export default async () => {
     './android/app/build.gradle',
     'import com.android.build.OutputFile',
     '\n\n' +
-    'project.ext.react = [' +
+    'project.ext.react = [\n' +
     '  bundleInStaging: true,\n' +
+    '  devDisabledInStaging: true,\n' +
     '  bundleInRelease: true\n' +
     ']\n',
   )
