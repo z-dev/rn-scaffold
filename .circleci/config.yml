@@ -1,0 +1,30 @@
+version: 2
+jobs:
+  build-test-deploy:
+    docker:
+      - image: circleci/node:10-browsers
+    steps:
+        - checkout
+        - run:
+            name: Add node modules to $PATH
+            command: echo 'export PATH=${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin' >> $BASH_ENV
+        - restore_cache:
+            name: Restore Yarn Package Cache
+            keys:
+              - yarn-packages-{{ checksum "yarn.lock" }}
+        - run:
+            name: Yarn install
+            command: yarn install --pure-lockfile
+        - save_cache:
+            key: yarn-packages-{{ checksum "yarn.lock" }}
+            name: Save Yarn Package Cache
+            paths:
+              - ~/.cache/yarn
+        - run:
+            name: test
+            command: yarn test
+workflows:
+  version: 2
+  workflow:
+    jobs:
+      - build-test-deploy
