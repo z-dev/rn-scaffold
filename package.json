@@ -2,29 +2,30 @@
   "name": "rn-scaffold",
   "version": "0.0.16",
   "description": "",
+  "repository": {
+    "url": "https://github.com/z-dev/rn-scaffold.git"
+  },
   "license": "ISC",
   "bin": {
     "rn-scaffold": "./build/bin.js"
   },
-  "repository": {
-    "url": "https://github.com/z-dev/rn-scaffold.git"
-  },
   "scripts": {
     "build": "rm -rf ./build && neutrino build --use neutrino-preset-node && cp ./src/bin.js ./build/ && find src/ | grep -v -i .js$ | cpio -pdm ./build",
     "check:node": "check-node-version --node \">=8.1.2 <9\"",
-    "ci": "npm run lint && npm run test",
+    "ci": "yarn lint && yarn test",
     "clean": "rm -rf dist",
-    "precommit": "lint-staged && npm run lint",
+    "precommit": "lint-staged && yarn lint",
     "eslint-check": "eslint --print-config .eslintrc | eslint-config-prettier-check",
-    "format:js": "npm run prettier -- \"src/**/*.js\"",
+    "format:js": "yarn prettier -- \"src/**/*.js\"",
     "lint": "eslint ./src ./test --ext=js",
-    "prepublish": "npm run build",
+    "prepublish": "in-publish && yarn build || not-in-publish",
+    "sort:package:json": "sort-package-json",
     "start": "neutrino start --use neutrino-preset-node",
     "start:built": "forever build/index.js",
-    "start:debug": "npm run start -- --debug",
+    "start:debug": "yarn start -- --debug",
     "start:docker": "docker build -t lead-finder-server . && docker run --rm -it lead-finder-server",
     "test": "neutrino test --use neutrino-preset-node neutrino-preset-mocha",
-    "test:watch": "nodemon -w src -w test --exec 'npm run test'",
+    "test:watch": "nodemon -w src -w test --exec 'yarn test'",
     "prettier": "prettier --single-quote --trailing-comma all --no-semi --print-width 180 --write"
   },
   "dependencies": {
@@ -59,6 +60,7 @@
     "eslint-plugin-react": "^7.3.0",
     "forever": "^0.15.3",
     "husky": "^0.13.4",
+    "in-publish": "^2.0.0",
     "lint-staged": "^3.6.1",
     "neutrino": "^5.9.0",
     "neutrino-preset-mocha": "^5.9.0",
@@ -73,11 +75,11 @@
   "engine-strict": true,
   "lint-staged": {
     "src/**/*.js": [
-      "npm run format:js --",
+      "yarn run format:js",
       "git add"
     ],
     "package.json": [
-      "sort-package-json",
+      "yarn sort:package:json",
       "git add"
     ]
   },
